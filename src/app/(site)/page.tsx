@@ -1,4 +1,5 @@
 import Image from "next/image";
+import AuthForm from "./components/AuthForm";
 
 
 export default function Home() {
@@ -36,8 +37,12 @@ export default function Home() {
             >
                 Sign in to access your groups
             </h2>
+          
         </div>
-            {/* Auth form */}
+
+          
+        <AuthForm />
+
       </div>
 
     )
