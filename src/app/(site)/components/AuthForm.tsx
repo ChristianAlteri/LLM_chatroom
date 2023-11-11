@@ -1,14 +1,42 @@
 'use client';
+import axios from 'axios';
 
 import Button from "@/app/components/Button";
 import Input from "@/app/components/inputs/Input";
 import { useCallback, useState } from "react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
-import AuthSocialButton from "./AuthSocialButton";
+import { toast } from 'react-hot-toast';
+import { signIn } from 'next-auth/react';
 
+import AuthSocialButton from "./AuthSocialButton";
 import { BsFacebook, BsGoogle, BsInstagram, BsWhatsapp } from 'react-icons/bs';
 
+import { TbFaceIdError, TbFaceId } from 'react-icons/tb';
+
+
 type Variant = 'LOGIN' | 'REGISTER';
+
+// Custom Toast Error
+const toastError = (message: string) => {
+  toast.error(message, {
+  style: {
+    background: 'white',
+    color: 'black',
+  },
+  icon: <TbFaceIdError size={30} />,
+});
+}
+// Custom Toast Success
+const toastSuccess = (message: string) => {
+  toast.error(message, {
+  style: {
+    background: 'white',
+    color: 'green',
+  },
+  icon: <TbFaceId size={30} />,
+});
+}
+
 
 const AuthForm = () => {
     const [variant, setVariant] = useState<Variant>('LOGIN');
@@ -41,18 +69,50 @@ const AuthForm = () => {
         setIsLoading(true);
 
         if (variant === 'REGISTER') {
-            // Axios call to register
+            axios.post('/api/register', data)
+            .catch(() => toastError('Something went wrong!'))
+            .finally(() => setIsLoading(false));
         }
+
         if (variant === 'LOGIN') {
-            // NextAuth call to login
+          // console.log(data);
+      signIn('credentials', {
+        ...data,
+        redirect: false
+      }) 
+      .then((callback) => {
+        if (callback?.error) {
+          toastError('Invalid credentials');
         }
+
+        if (callback?.ok) {
+          // router.push('/conversations')
+          toastSuccess('Logging in')
+        }
+      })
+      .finally(() => setIsLoading(false))
     }
+  }
 
     const  socialAction = (action: string) => {
-        setIsLoading(true)
+      // TODO: ADD META LOGINS
+        setIsLoading(true);
 
-        // Social login
-    }
+        signIn(action, {redirect: false})
+        .then((callback) => {
+          if (callback?.error) {
+            toastError('Invalid credentials');
+          }
+  
+          if (callback?.ok && !callback?.error) {
+            // router.push('/conversations')
+            toastSuccess('Logging in')
+          }
+        })
+        .finally(() => setIsLoading(false))
+      }
+    
+  
 
 
     return ( 
@@ -134,6 +194,7 @@ const AuthForm = () => {
                 /> 
                 <AuthSocialButton 
                     icon={BsFacebook} 
+                    // Change name to facebook ect
                     onClick={() => socialAction('google')} 
                 /> 
                 <AuthSocialButton 
@@ -172,6 +233,7 @@ const AuthForm = () => {
       </div>
     );
   }
+
 
 
 export default AuthForm;
