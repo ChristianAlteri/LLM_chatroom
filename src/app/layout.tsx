@@ -1,14 +1,16 @@
 import type { Metadata } from 'next'
-import { Inter } from 'next/font/google'
+import { Inter, Italiana } from 'next/font/google'
 import './globals.css'
 
 import ToasterContext from './context/ToasterContext'
+import AuthContext from './context/AuthContext'
 
+// const inter = Italiana({ subsets: ['latin'] })
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'pip Group Messenger',
-  description: 'pip Group Messenger',
+  title: 'Groups Messenger',
+  description: 'Groups Messenger',
 }
 
 export default function RootLayout({
@@ -19,8 +21,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <ToasterContext />
-        {children}
+        <AuthContext>
+          <ToasterContext />
+          {children}
+        </AuthContext>
       </body>
     </html>
   )
