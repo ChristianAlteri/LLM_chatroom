@@ -9,8 +9,8 @@ import AuthContext from './context/AuthContext'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'Groups Messenger',
-  description: 'Groups Messenger',
+  title: 'Groups',
+  description: 'Groups at Your Fingertips: Simplify, Connect, Organise!',
 }
 
 export default function RootLayout({
