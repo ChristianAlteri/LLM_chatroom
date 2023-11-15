@@ -8,7 +8,7 @@ export default async function UsersLayout({
     return (
         // @ts-ignore
         <Sidebar >  
-            <div className="h-full bg-green-700">{children}</div>
+            <div className="h-full bg-white">{children}</div>
         </Sidebar>  
     )
 }
