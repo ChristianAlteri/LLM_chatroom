@@ -41,9 +41,9 @@ const MobileItem: React.FC<MobileItemProps> = ({
         p-4
         text-slate-500 
         hover:text-slate-900
-        hover:bg-slate-100
+        hover:bg-blue-200
         `,
-        active && 'bg-slate-100 text-slate-900'
+        active && 'bg-blue-200 text-slate-900'
 
         )}
         >
