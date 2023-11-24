@@ -16,7 +16,7 @@ const getMessages = async (
                 createdAt: 'asc'
             }
         })
-        console.log('messages: ', messages);
+        // console.log('messages: ', messages);
         return messages;
     } catch (error: any) {
         return [];

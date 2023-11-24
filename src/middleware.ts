@@ -10,5 +10,8 @@ export default withAuth({
 
 // this states that any route that starts with /users/ will be protected by the withAuth middleware. 
 export const config = {
-  matcher: ["/users/:path*"]
+  matcher: [
+    "/users/:path*",
+    "/conversations/:path*"
+  ]
 };
