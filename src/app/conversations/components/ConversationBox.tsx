@@ -37,11 +37,11 @@ const ConversationBox: React.FC<ConversationBoxProps> = ({
 
   const userEmail = useMemo(() => {
     const userSession = session?.data;
-    console.log("logged in users data:", userSession);
+    // console.log("logged in users data:", userSession);
 
     return session?.data?.user?.email;
     // using ?. so it doesn't break if session, data or user is empty
-  }, [session?.data?.user?.email]);
+  }, [session?.data?.user?.email, session?.data]);
 
   const hasSeen = useMemo(() => {
     if (!lastMessage) {
