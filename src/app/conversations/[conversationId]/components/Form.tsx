@@ -38,7 +38,7 @@ const Form = () => {
         className="
             py-4 
             px-4 
-            bg-white
+            bg-slate-100
             border-slate-200 
             border-t 
             flex 
@@ -48,10 +48,37 @@ const Form = () => {
             w-full
             " 
         >
-        <HiPhoto size={26} className="text-slate-500" />
+        {/* Message bar sidebar navigation for file upload or photo upload */}
+        <form 
+            onSubmit={() => {}}
+            className="flex items-center gap-2 lg:gap-4 "
+        >
+          <button
+            type="submit"
+            className="
+            rounded-xl
+            p-2
+            bg-slate-100
+            cursor-pointer
+            transition
+            hover:text-black
+            hover:bg-blue-200
+            hover:border
+            hover:border-slate-500
+            "
+            >
+                <HiPhoto size={26} className="
+                text-slate-500
+                hover:text-black
+                " 
+                />
+          </button>
+        </form>
+
+        {/* Send message button */}
         <form 
             onSubmit={handleSubmit(onSubmit)}
-            className=" flex items-center ga-2 lg:gap-4 w-full"
+            className=" flex items-center gap-2 lg:gap-4 w-full"
         >
             <MessageInput 
                 id='message'
@@ -67,10 +94,12 @@ const Form = () => {
             p-2
             bg-slate-100
             cursor-pointer
-            hover:bg-blue-100
             transition
-            hover:ring
-             hover:border-blue-500
+            hover:text-black
+            hover:bg-blue-200
+            hover:border
+            hover:border-slate-500
+
             "
             >
                 <PiPersonSimpleThrowDuotone 

@@ -179,10 +179,10 @@ const AuthForm = () => {
                   items-center
                 "
             >
-              <div className="w-full border-t border-gray-300" />
+              <div className="w-full border-t border-slate-300" />
             </div>
             <div className="relative flex justify-center text-sm">
-              <span className="bg-white px-2 text-gray-500">
+              <span className="bg-white px-2 text-slate-500">
                 Or continue with
               </span>
             </div>
@@ -216,7 +216,7 @@ const AuthForm = () => {
               text-sm 
               mt-6 
               px-2 
-              text-gray-500
+              text-slate-500
             "
         >
           <div>
@@ -226,7 +226,7 @@ const AuthForm = () => {
           </div>
           <div
             onClick={toggleVariant}
-            className="underline cursor-pointer  hover:text-emerald-400"
+            className="underline cursor-pointer  hover:text-blue-200"
           >
             {variant === "LOGIN" ? "Create an account" : "Login"}
           </div>

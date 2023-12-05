@@ -31,6 +31,7 @@ const DesktopItem: React.FC<DesktopItemProps> = ({
                 href={href}
                 className={clsx(`
                 group
+                
                 flex
                 gap-x-3
                 rounded-md
@@ -42,7 +43,7 @@ const DesktopItem: React.FC<DesktopItemProps> = ({
                 hover:text-black
                 hover:bg-blue-200
                 hover:border
-                            hover:border-slate-500
+                hover:border-slate-500
                 `, 
                     active && `bg-blue-200 text-black`
                 )}

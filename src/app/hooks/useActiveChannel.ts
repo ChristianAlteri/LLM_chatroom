@@ -1,47 +1,47 @@
-import useActiveList from "./useActiveList";
+// import useActiveList from "./useActiveList";
 
-import { useEffect, useState } from "react";
-import { Channel, Members } from "pusher-js";
-import { pusherClient } from "../libs/pusher";
+// import { useEffect, useState } from "react";
+// import { Channel, Members } from "pusher-js";
+// import { pusherClient } from "../libs/pusher";
 
 
 
-const useActiveChannel = () => {
-    const { set, add, remove} = useActiveList();
-    const [activeChannel, setActiveChannel] = useState<Channel | null>();
+// const useActiveChannel = () => {
+//     const { set, add, remove} = useActiveList();
+//     const [activeChannel, setActiveChannel] = useState<Channel | null>();
 
-    useEffect(()=> {
-        let channel = activeChannel;
+//     useEffect(()=> {
+//         let channel = activeChannel;
 
-        if(!channel){
-            channel = pusherClient.subscribe('presence-messenger');
-            setActiveChannel(channel);
-        }
+//         if(!channel){
+//             channel = pusherClient.subscribe('presence-messenger');
+//             setActiveChannel(channel);
+//         }
 
-        channel.bind('pusher:subscription_succeeded', (members: Members) => {
-            const initialMembers: string[] = [];
+//         channel.bind('pusher:subscription_succeeded', (members: Members) => {
+//             const initialMembers: string[] = [];
 
-            members.each((member: Record<string, any>) => initialMembers.push(member.id));
-            set(initialMembers);
-        });
+//             members.each((member: Record<string, any>) => initialMembers.push(member.id));
+//             set(initialMembers);
+//         });
 
-        channel.bind('pusher:member_added', (member: Record<string, any>) => {
-            add(member.id);
-        });
+//         channel.bind('pusher:member_added', (member: Record<string, any>) => {
+//             add(member.id);
+//         });
 
-        channel.bind('pusher:member_removed', (member: Record<string, any>) => {
-            remove(member.id);
-        });
+//         channel.bind('pusher:member_removed', (member: Record<string, any>) => {
+//             remove(member.id);
+//         });
 
-        return () => {
+//         return () => {
 
-            if (activeChannel) {
-                pusherClient.unsubscribe('presence-messenger');
-                setActiveChannel(null);
-            }
-        }
+//             if (activeChannel) {
+//                 pusherClient.unsubscribe('presence-messenger');
+//                 setActiveChannel(null);
+//             }
+//         }
 
-    }, [activeChannel, add, remove, set]);
-};
+//     }, [activeChannel, add, remove, set]);
+// };
 
-export default useActiveChannel
+// export default useActiveChannel

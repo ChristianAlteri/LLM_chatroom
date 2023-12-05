@@ -26,7 +26,8 @@ interface BodyProps {
 
     useEffect(() => {
         pusherClient.subscribe(conversationId)
-        bottomRef?.current?.scrollIntoView()
+        // one of the parent divs has property 'fill' or 'sticky' so i've commented out the scrollIntoView
+        // bottomRef?.current?.scrollIntoView()
 
         const messageHandler = (message: FullMessageType) => {
             axios.post(`/api/conversations/${conversationId}/seen`)
@@ -36,7 +37,7 @@ interface BodyProps {
                 }
                 return [...current, message]
             });
-            bottomRef?.current?.scrollIntoView()
+            // bottomRef?.current?.scrollIntoView()
         }
 
         const updateMessageHandler = (newMessage: FullMessageType) => {
@@ -59,7 +60,7 @@ interface BodyProps {
 
     }, [conversationId]);
     return ( 
-        <div className="flex-1 overflow-y-auto">
+        <div className="flex-1 overflow-y-auto bg-slate-100">
             {messages.map((message, i) => (
                 <MessageBox 
                     isLast={i === messages.length - 1}

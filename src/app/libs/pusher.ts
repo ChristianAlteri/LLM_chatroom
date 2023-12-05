@@ -12,11 +12,17 @@ export const pusherServer = new PusherServer({
   export const pusherClient = new PusherClient(
     process.env.NEXT_PUBLIC_PUSHER_APP_KEY!,
     {
-      // When pusher supports latest next version you can even create the auth.ts in your app/api instead of pages/api
-      channelAuthorization: {
-        endpoint: '/api/pusher/auth',
-        transport: 'ajax',
-      },
       cluster: 'eu',
     }
   );
+  // export const pusherClient = new PusherClient(
+  //   process.env.NEXT_PUBLIC_PUSHER_APP_KEY!,
+  //   {
+  //     // When pusher supports latest next version you can even create the auth.ts in your app/api instead of pages/api
+  //     channelAuthorization: {
+  //       endpoint: '/api/pusher/auth',
+  //       transport: 'ajax',
+  //     },
+  //     cluster: 'eu',
+  //   }
+  // );

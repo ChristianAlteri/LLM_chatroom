@@ -33,13 +33,13 @@ const MessageInput: React.FC<MessageInputProps> = ({
             font-semibold
             py-2
             px-4
-            bg-slate-100 
+            bg-white 
             w-full 
             rounded-xl
-            focus:bg-blue-100
+            focus:bg-white-100
             focus:outline-none 
             focus:ring
-             focus:border-blue-500
+             focus:border-blue-100
 
           "
         />

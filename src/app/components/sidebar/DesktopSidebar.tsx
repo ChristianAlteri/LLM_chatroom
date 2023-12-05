@@ -38,7 +38,7 @@ const DesktopSidebar: React.FC<DesktopSidebarProps> = ({
             lg:w-20
             xl:px-6
             lg:overflow-y-auto
-            lg:bg-slate-100
+            lg:bg-slate-200
             shadow-inner
             lg:pb-4
             lg:flex
@@ -52,6 +52,7 @@ const DesktopSidebar: React.FC<DesktopSidebarProps> = ({
                     flex
                     flex-col
                     justify-between
+
                     "
                 >
                     <ul
@@ -61,6 +62,7 @@ const DesktopSidebar: React.FC<DesktopSidebarProps> = ({
                             flex-col
                             items-center
                             space-y-1
+                            
                         "
                         >
 

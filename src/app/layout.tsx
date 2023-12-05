@@ -4,7 +4,7 @@ import './globals.css'
 
 import ToasterContext from './context/ToasterContext'
 import AuthContext from './context/AuthContext'
-import ActiveStatus from './components/ActiveStatus'
+// import ActiveStatus from './components/ActiveStatus'
 
 // const inter = Italiana({ subsets: ['latin'] })
 const inter = Inter({ subsets: ['latin'] })
@@ -24,7 +24,7 @@ export default function RootLayout({
       <body className={inter.className}>
         <AuthContext>
           <ToasterContext />
-          <ActiveStatus />
+          {/* <ActiveStatus /> */}
           {children}
         </AuthContext>
       </body>

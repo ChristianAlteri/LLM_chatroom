@@ -26,6 +26,21 @@ const ConversationBox: React.FC<ConversationBoxProps> = ({
   const session = useSession();
   const router = useRouter();
 
+  const handleClickCatchUp = useCallback(() => {
+    /*
+    // router.push(`/conversations/${data.id}/summary`);
+
+    TODO: Mark seen to be true when catch up is clicked
+
+    You have hasSeen so you need to extract has 
+    not seen and query a llm to give you a summary 
+    of hasNotSeen messages. 
+    This way you ensure individual context.
+
+    */
+    window.location.href = 'https://www.openai.com';
+  }, []);
+
   const handleClick = useCallback(() => {
     router.push(`/conversations/${data.id}`);
   }, [data.id, router]);
@@ -69,6 +84,9 @@ const ConversationBox: React.FC<ConversationBoxProps> = ({
   }, [lastMessage]);
 
   return (
+    <div className="
+    p-2
+    ">
     <div
       onClick={handleClick}
       className={clsx(
@@ -77,9 +95,9 @@ const ConversationBox: React.FC<ConversationBoxProps> = ({
     relative
     flex
     items-center
-    space-x-3
-    bg-slate-50
-    p-3
+    space-x-2
+    bg-slate-100
+    p-4
     hover:bg-blue-50
     hover:shadow-xl
     hover:border
@@ -104,6 +122,7 @@ const ConversationBox: React.FC<ConversationBoxProps> = ({
                 justify-between
                 items-center
                 mb-1
+                
                 "
           >
             <p
@@ -134,16 +153,36 @@ const ConversationBox: React.FC<ConversationBoxProps> = ({
           className={clsx(`
           truncate
           text-xs
-          text-slate-700
+          text-slate-900
             p-1
+            rounded-md
+
+
           `,
-          hasSeen ? "text-slate-500" : "text-black font-medium"
-          ) }
+          hasSeen ? "text-slate-300" : "text-black font-bold"
+          )}
           >
                 {lastMessageBody}
           </p>
+
+
+          {/* Catch up feature - send to a LLM summary */}
+            {!hasSeen && (
+              <span 
+                className="
+                text-xs 
+                p-1
+                text-slate-300 
+                hover:text-black 
+                hover:underline"
+                onClick={handleClickCatchUp}
+                >
+                  Catch up
+              </span>
+            )}
         </div>
       </div>
+    </div>
     </div>
   );
 };

@@ -63,7 +63,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
   return (
     <Modal isOpen={isOpen} onClose={onClose}>
       <form onSubmit={handleSubmit(onSubmit)}>
-        <div className="space-y-12">
+        <div className="space-y-12 ">
           <div className="border-b border-slate-900/10 pb-12">
             <h2
               className="
@@ -71,6 +71,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
                         font-semibold
                         leading-7
                         text-slate-900
+                        bg-slate-200
                         "
             >
               Profile

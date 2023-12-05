@@ -22,7 +22,7 @@ const Modal: React.FC<ModalProps> = ({
     >
         <Dialog
             as='div'
-            className='relative z-50'
+            className='relative z-50 '
             onClose={onClose}
         >
             <Transition.Child
@@ -71,7 +71,7 @@ const Modal: React.FC<ModalProps> = ({
                         transform
                         overflow-hidden
                         rounded-lg
-                        bg-white
+                        bg-slate-50
                         px-4
                         pb-4
                         text-left

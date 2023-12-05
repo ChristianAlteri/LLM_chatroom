@@ -12,6 +12,7 @@ import { RiArrowLeftSLine } from "react-icons/ri";
 import { IoEllipsisHorizontalSharp } from "react-icons/io5";
 import ProfileDrawer from "./ProfileDrawer";
 import { set } from "date-fns";
+// import useActiveList from "@/app/hooks/useActiveList";
 
 interface HeaderProps {
   conversation: Conversation & {
@@ -22,37 +23,44 @@ interface HeaderProps {
 const Header: React.FC<HeaderProps> = ({ conversation }) => {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const otherUser = useOtherUser(conversation);
-  const statusText = useMemo(() => {
-    if (conversation.isGroup) {
-      return `${conversation.users.length} members`;
-    }
+  // const { members } = useActiveList();
+  // const isActive = members.indexOf(otherUser?.email!) !== -1;
 
-    return "Active";
-  }, [conversation]);
+  // const statusText = useMemo(() => {
+  //   if (conversation.isGroup) {
+  //     return `${conversation.users.length} members`;
+  //   }
+
+  //   // return isActive ? "Active" : "Offline";
+  //   return "Active";
+  // }, [conversation]);
 
   return (
     <>
+    
     <ProfileDrawer
       data={conversation}
       isOpen={drawerOpen}
       onClose={() => setDrawerOpen(false)}
       />
+      
       <div
         className="
-            bg-white 
+          bg-slate-100
             w-full 
             flex 
             border-b-[1px] 
-            border-slate-200
+            border-slate-400
             sm:px-3
             py-3
-            px-4 
-            lg:px-6 
+            px-3 
+            lg:px-4
             justify-between 
             items-center 
             
           "
       >
+        
         <div className="flex gap-3 items-center">
           <Link
             href="/conversations"
@@ -68,17 +76,23 @@ const Header: React.FC<HeaderProps> = ({ conversation }) => {
           >
             <RiArrowLeftSLine size={26} />
           </Link>
+          
           {conversation.isGroup ? 
           (<AvatarGroup users={conversation.users}/>) : 
           (<Avatar user={otherUser} />) }
           
-          <div className="flex flex-col">
+          <div className="flex p-1 flex-col text-slate-800 font-bold">
             <div>{conversation.name || otherUser.name}</div>
-            <div className="text-xs font-light text-slate-500">
+            {/* <div className="text-xs text-slate-100">
               {statusText}
-            </div>
+            </div> */}
           </div>
         </div>
+
+            {/* Put your other nav bar buttons here */}
+
+        {/* <div>Calendar</div> */}
+
         <IoEllipsisHorizontalSharp
           size={26}
           onClick={() => setDrawerOpen(true)}

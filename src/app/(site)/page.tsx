@@ -32,7 +32,7 @@ export default function Home() {
             text-3xl
             font-bold
             tracking-tight
-            text-gray-900
+            text-slate-900
             "
             >
                 Sign in to access your groups
