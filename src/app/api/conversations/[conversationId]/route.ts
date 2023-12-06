@@ -14,10 +14,11 @@ export async function DELETE(
     try {
         const { conversationId } = params;
         const currentUser = await getCurrentUser()
+        
 
-        if(!currentUser?.id) {
-            return new NextResponse('Unauthorized', {status: 401})
-        }
+        if (!currentUser?.id) {
+            return NextResponse.json(null);
+          }
 
         const existingConversation = await prisma.conversation.findUnique({
             where: {

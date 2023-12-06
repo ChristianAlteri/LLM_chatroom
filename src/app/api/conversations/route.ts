@@ -6,11 +6,13 @@ import { pusherServer } from "@/app/libs/pusher";
 export async function POST(request: Request) {
   try {
     const currentUser = await getCurrentUser();
+    console.log("Current user in /api/conversation create", currentUser);
     const body = await request.json();
     const { userId, isGroup, name, members } = body;
+    console.log('body', body);
 
     if (!currentUser?.id || !currentUser?.email) {
-      return new NextResponse("Unauthorized", { status: 401 });
+      return new NextResponse("Unauthorized at api/conversations", { status: 401 });
     }
 
     if (isGroup && (!members || members.length < 2 || !name)) {
@@ -46,7 +48,7 @@ export async function POST(request: Request) {
 
       })
 
-      return new NextResponse(JSON.stringify(newConversation), { status: 200 });
+      return NextResponse.json(newConversation);
     }
 
 
@@ -71,26 +73,26 @@ export async function POST(request: Request) {
     const singleConversation = existingConversation[0];
 
     if (singleConversation) {
-        return NextResponse.json(singleConversation, { status: 200 });
+      return NextResponse.json(singleConversation);
     }
 
     // Create new conversation
     const newConversation = await prisma.conversation.create({
-        data: {
-            users: {
-                connect: [
-                    {
-                        id: currentUser.id
-                    },
-                    {
-                        id: userId
-                    }
-                ]
+      data: {
+        users: {
+          connect: [
+            {
+              id: currentUser.id
+            },
+            {
+              id: userId
             }
-        },
-        include: {
-            users: true
+          ]
         }
+      },
+      include: {
+        users: true
+      }
     });
 
     newConversation.users.map((user) => {
@@ -100,7 +102,7 @@ export async function POST(request: Request) {
       
     })
 
-    return NextResponse.json(newConversation, { status: 200 })
+    return NextResponse.json(newConversation)
 
     
   } catch (error: any) {
