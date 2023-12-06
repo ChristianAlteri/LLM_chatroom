@@ -13,13 +13,15 @@ interface UserBoxProps {
   data: User;
 }
 
-const UserBox: React.FC<UserBoxProps> = ({ data }) => {
+const UserBox: React.FC<UserBoxProps> = ({ 
+  data 
+}) => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
 
   const handleClick = useCallback(() => {
     setIsLoading(true);
-
+    console.log('data userbox api/conversations: ', data);
     axios.post('/api/conversations', { userId: data.id })
     .then((data) => {
       router.push(`/conversations/${data.data.id}`);
