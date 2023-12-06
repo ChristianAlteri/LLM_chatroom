@@ -8,7 +8,9 @@ export async function POST(
 ) {
   try {
     const currentUser = await getCurrentUser();
+    console.log('api/conversations currentUser: ', currentUser);
     const body = await request.json();
+    console.log('api/conversations body: ', body);
     const {
       userId,
       isGroup,
