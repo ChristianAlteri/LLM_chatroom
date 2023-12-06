@@ -10,18 +10,18 @@ import Avatar from "@/app/components/Avatar";
 import LoadingModal from "@/app/components/modals/LoadingModal";
 
 interface UserBoxProps {
-  data: User;
+  data: User
 }
 
 const UserBox: React.FC<UserBoxProps> = ({ 
-  data 
+  data
 }) => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
 
   const handleClick = useCallback(() => {
     setIsLoading(true);
-    console.log('data userbox api/conversations: ', data);
+    console.log('UserBox post data: ', data);
     axios.post('/api/conversations', { userId: data.id })
     .then((data) => {
       router.push(`/conversations/${data.data.id}`);
@@ -31,8 +31,10 @@ const UserBox: React.FC<UserBoxProps> = ({
 
   return (
     <>
-      {isLoading && (<LoadingModal />)}
-      <div 
+      {isLoading && (
+        <LoadingModal />
+      )}
+      <div
         onClick={handleClick}
         className="
         w-full
