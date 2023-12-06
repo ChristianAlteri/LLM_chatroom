@@ -42,6 +42,7 @@ const ConversationBox: React.FC<ConversationBoxProps> = ({
   }, []);
 
   const handleClick = useCallback(() => {
+    console.log('contact clicked', data.id);
     router.push(`/conversations/${data.id}`);
   }, [data.id, router]);
 
@@ -51,13 +52,8 @@ const ConversationBox: React.FC<ConversationBoxProps> = ({
     return messages[messages.length - 1];
   }, [data.messages]);
 
-  const userEmail = useMemo(() => {
-    const userSession = session?.data;
-    // console.log("logged in users data:", userSession);
-
-    return session?.data?.user?.email;
-    // using ?. so it doesn't break if session, data or user is empty
-  }, [session?.data?.user?.email, session?.data]);
+  const userEmail = useMemo(() => session.data?.user?.email,
+  [session.data?.user?.email]);
 
   const hasSeen = useMemo(() => {
     if (!lastMessage) {
@@ -70,18 +66,22 @@ const ConversationBox: React.FC<ConversationBoxProps> = ({
       return false;
     }
 
-    return seenArray.filter((user) => user.email === userEmail).length !== 0;
+    return seenArray
+      .filter((user) => user.email === userEmail).length !== 0;
   }, [userEmail, lastMessage]);
 
-  const lastMessageBody = useMemo(() => {
+  const lastMessageText = useMemo(() => {
     if (lastMessage?.image) {
-      return "Sent an image";
+      return 'Sent an image';
     }
+
     if (lastMessage?.body) {
-      return lastMessage.body;
+      return lastMessage?.body
     }
-    return "No messages yet";
+
+    return 'Started a conversation';
   }, [lastMessage]);
+
 
   return (
     <div className="
@@ -89,8 +89,7 @@ const ConversationBox: React.FC<ConversationBoxProps> = ({
     ">
     <div
       onClick={handleClick}
-      className={clsx(
-        `
+      className={clsx(`
     w-full
     relative
     flex
@@ -156,13 +155,11 @@ const ConversationBox: React.FC<ConversationBoxProps> = ({
           text-slate-900
             p-1
             rounded-md
-
-
           `,
           hasSeen ? "text-slate-300" : "text-black font-bold"
           )}
           >
-                {lastMessageBody}
+                {lastMessageText}
           </p>
 
 

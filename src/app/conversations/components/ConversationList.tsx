@@ -9,7 +9,7 @@ import { useEffect, useMemo, useState } from "react";
 
 import { MdGroupAdd } from "react-icons/md";
 import ConversationBox from "./ConversationBox";
-import GroupChatModal from "./GroupChatModal";
+import GroupChatModal from "../../components/modals/GroupChatModal";
 import { User } from "@prisma/client";
 import { useSession } from "next-auth/react";
 import { pusherClient } from "@/app/libs/pusher";

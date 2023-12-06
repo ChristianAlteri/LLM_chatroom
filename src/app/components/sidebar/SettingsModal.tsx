@@ -7,7 +7,7 @@ import { User } from "@prisma/client";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
-import Modal from "../Modal";
+import Modal from "../modals/Modal";
 import Input from "../inputs/Input";
 import Image from "next/image";
 import Button from "../Button";

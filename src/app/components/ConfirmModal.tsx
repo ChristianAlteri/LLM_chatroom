@@ -6,7 +6,7 @@ import { useCallback, useState } from "react";
 import axios from "axios";
 import { on } from "events";
 import toast from "react-hot-toast";
-import Modal from "./Modal";
+import Modal from "./modals/Modal";
 
 import { FiAlertTriangle } from 'react-icons/fi'
 import { Dialog } from "@headlessui/react";

@@ -7,7 +7,7 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import toast from "react-hot-toast";
-import Modal from "@/app/components/Modal";
+import Modal from "@/app/components/modals/Modal";
 import Input from "@/app/components/inputs/Input";
 import Select from "@/app/components/inputs/Select";
 import Button from "@/app/components/Button";
@@ -22,7 +22,7 @@ interface GroupChatModalProps {
 const GroupChatModal: React.FC<GroupChatModalProps> = ({
     isOpen,
     onClose,
-    users
+    users = []
 }) => {
     const router = useRouter();
     const [isLoading, setIsLoading] = useState(false);
@@ -39,31 +39,28 @@ const GroupChatModal: React.FC<GroupChatModalProps> = ({
             name: '',
             members: []
         }
-    })
+    });
 
     const members = watch('members');
 
     const onSubmit: SubmitHandler<FieldValues> = (data) => {
         setIsLoading(true);
-
+        console.log('inside axios.post/api/conversations data: ', data);
         axios.post('/api/conversations', {
             ...data,
             isGroup: true
-        })
-        .then(() => {
-            router.refresh()
-            onClose()
-        })
-        .catch(() => toast.error('Something went wrong'))
-        .finally(() => setIsLoading(false))
-    }
+          })
+          .then(() => {
+            router.refresh();
+            onClose();
+          })
+          .catch(() => toast.error('Something went wrong!'))
+          .finally(() => setIsLoading(false));
+        }
 
     return ( 
-        <Modal
-        isOpen={isOpen}
-        onClose={onClose}
-        >
-            <form onSubmit={handleSubmit(onSubmit)}>
+            <Modal isOpen={isOpen} onClose={onClose}>
+                <form onSubmit={handleSubmit(onSubmit)}>
                 <div className="space-y-12">
                     <div className="border-b border-slate-900/10 pb-10">
                         <h2

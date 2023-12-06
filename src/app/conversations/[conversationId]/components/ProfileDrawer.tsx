@@ -3,7 +3,7 @@
 import Avatar from "@/app/components/Avatar";
 import AvatarGroup from "@/app/components/AvatarGroup";
 import ConfirmModal from "@/app/components/ConfirmModal";
-import Modal from "@/app/components/Modal";
+import Modal from "@/app/components/modals/Modal";
 // import useActiveList from "@/app/hooks/useActiveList";
 
 import useOtherUser from "@/app/hooks/useOtherUser";
