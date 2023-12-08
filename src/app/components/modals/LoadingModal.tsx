@@ -2,7 +2,7 @@
 
 import React, { Fragment } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
-import { BarLoader, GridLoader, HashLoader, ScaleLoader } from 'react-spinners'
+import { ScaleLoader } from 'react-spinners'
 
 
 const LoadingModal = () => {

@@ -7,7 +7,7 @@ export default async function UsersLayout({
 } : {
     children: React.ReactNode;
 }) {
-    // essentiallty the same as if you where to write the prisma get request here
+    // essentially the same as if you where to write the prisma get request here
     const users = await getUsers()
 
     // console.log(users);
@@ -15,6 +15,7 @@ export default async function UsersLayout({
         // @ts-ignore
         <Sidebar >  
             <div className="h-full bg-white">
+            
                 <UserList items={users}/>
                 {children}
             

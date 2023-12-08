@@ -2,6 +2,7 @@
 
 import { User } from "@prisma/client";
 import UserBox from "./UserBox";
+import SearchBar from "@/app/components/inputs/SearchBar";
 
 interface UserListProps {
     items: User[];
@@ -37,7 +38,13 @@ const UserList: React.FC<UserListProps> = ({
                     text-slate-800
                     py-5
                     ">
-                        Contacts 
+                        Contacts
+                        <SearchBar
+                        label="Search contacts by email"
+                        id="search"
+                        items={items}
+                        >
+                        </SearchBar> 
                     </div>
                 </div>
                 {items.map((item) => (
