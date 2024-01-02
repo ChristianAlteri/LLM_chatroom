@@ -4,6 +4,7 @@ import React, { Fragment, useEffect, useRef, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { CgCloseR } from "react-icons/cg";
 import Input from "../inputs/Input";
+import UserBox from "@/app/users/Components/UserBox";
 
 interface SearchModalProps {
   items: any[];
@@ -78,7 +79,7 @@ const SearchModal: React.FC<SearchModalProps> = ({
               ></div>
             </Transition.Child>
 
-            <div className="fixed inset-5 overflow-y-auto flex items-center justify-center">
+            <div className="fixed border inset-5 overflow-y-auto flex items-center justify-center">
               <div
                 className="
                     inset-5
@@ -90,6 +91,8 @@ const SearchModal: React.FC<SearchModalProps> = ({
                   text-center
                   rounded-md
                   border
+                  border-slate-900
+                  bg-white
                   h-full
                   w-full
 
@@ -99,7 +102,9 @@ const SearchModal: React.FC<SearchModalProps> = ({
                 <div className="w-full h-full">
                   {/*  Buttons */}
                   <div className="flex flex-row w-full gap-4 items-center p-1 justify-between text-slate-900">
-                    search modal
+                    <h1 className="font-bold ">Search</h1>
+                    <div>search modal</div>
+                    <div>search modal</div>
                     <button
                       type="button"
                       onClick={closeModal}
@@ -145,10 +150,13 @@ const SearchModal: React.FC<SearchModalProps> = ({
                   />
                 <div>
                 {searchQuery && (
-                <div className="bg-white rounded-md">
+                    <div className="bg-white rounded-md">
                     {filteredUsers.map((item) => (
-                    <div className="p-1.5 mt-5 h-full top-0" key={item.id}>
-                        <div className="flex flex-row w-full justify-center text-slate-900">
+                        <div className="p-1.5 mt-5 h-full top-0" key={item.id}>
+                        <UserBox
+                        data={item}
+                        />
+                        {/* <div className="flex flex-row w-full justify-center text-slate-900">
                         <ul className="flex flex-row justify-between  w-full mt-2 ">
                             <li className=" relative flex cursor-pointer hover:underline hover:text-slate-900">
                             <p className="font-semibold">{item.name}</p> - 
@@ -156,19 +164,19 @@ const SearchModal: React.FC<SearchModalProps> = ({
                             </li>
                             <p className="flex justify-end">Add</p>
                         </ul>
-                        </div>
+                        </div> */}
                     </div>
                     ))}
                     </div>
                 )}
-                <div className="flex mt-40 flex-row w-full gap-5">
-                  <div className="flex">item</div>
-                  <div className="flex">item</div>
-                  <div className="flex">item</div>
-                </div>
                 </div>
                 {/* Search options */}
               </div>
+                <div className="flex mt-40 flex-row w-full gap-5">
+                  <div className="flex">50th bday</div>
+                  <div className="flex">event</div>
+                  <div className="flex">Magic the Gathering</div>
+                </div>
             </div>
             </div>
           </Dialog>
