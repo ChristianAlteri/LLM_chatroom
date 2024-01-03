@@ -5,6 +5,7 @@ import Header from "./components/Header";
 import Body from "./components/Body";
 import Form from "./components/Form";
 import DetailSection from "./components/DetailSection";
+import getCurrentUser from "@/app/actions/getCurrentUser";
 
 interface IParams {
   conversationId: string;
@@ -13,6 +14,7 @@ interface IParams {
 const ConversationId = async ({ params }: { params: IParams }) => {
   const conversation = await getConversationsbById(params.conversationId);
   const messages = await getMessages(params.conversationId);
+  const currentUser = await getCurrentUser()
 
   // empty state
   if (!conversation) {
@@ -29,7 +31,7 @@ const ConversationId = async ({ params }: { params: IParams }) => {
     <div className="lg:pl-80 h-full">
       <div className="h-full flex flex-col">
         <Header conversation={conversation} />
-        <DetailSection conversation={conversation} />
+        <DetailSection conversation={conversation} currentUser={currentUser!}  />
         <Body initialMessages={messages} />
         <Form />
       </div>

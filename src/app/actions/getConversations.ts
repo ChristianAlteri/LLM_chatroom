@@ -26,6 +26,15 @@ const getConversations = async () => {
             seen: true,
           }
         },
+        eventDetails: {
+          include: {
+            potentialDates: {
+              include: {
+                user: true,
+              }
+            }
+          }
+        }
       }
     });
 
