@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useState } from 'react';
-import { Conversation, User } from "@prisma/client";
+import { Conversation, EventDetails, User } from "@prisma/client";
 import CalendarModal from '@/app/components/modals/CalendarModal';
 import axios from 'axios';
 
@@ -10,18 +10,20 @@ interface DetailSectionProps {
       users: User[];
     };
     currentUser: User;
+    eventDetails: EventDetails;
 }
 
 const DetailSection: React.FC<DetailSectionProps> = ({
     conversation,
-    currentUser
+    currentUser,
+    eventDetails
 }) => {
 
-    const [eventDetails, setEventDetails] = useState<string>('');
+    const [description, setEventDescription] = useState<string>('');
 
 
-    const handleEventDetailsChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setEventDetails(event.target.value);
+    const handleEventDescription = (event: React.ChangeEvent<HTMLInputElement>) => {
+        setEventDescription(event.target.value);
     };
 
 
@@ -32,11 +34,11 @@ const DetailSection: React.FC<DetailSectionProps> = ({
             const response = axios.post('/api/event-details', {
                 userId: currentUser.id,
                 conversationId: conversation.id,
-                eventDetails: eventDetails,
+                description: description,
             });
 
             // Handle the response as needed
-            console.log('Server response:', response);
+            // console.log('Server response:', response);
         } catch (error) {
             // Handle errors
             console.error('Error submitting event details:', error);
@@ -57,13 +59,14 @@ const DetailSection: React.FC<DetailSectionProps> = ({
             border
             border-slate-900
             '>
+                <h1>{eventDetails?.description!}</h1>
 
                 <form onSubmit={handleSubmit}>
                     <input
                         type="text"
                         placeholder='Add event details'
-                        value={eventDetails}
-                        onChange={handleEventDetailsChange}
+                        value={description}
+                        onChange={handleEventDescription}
                     />
                     <button type="submit">Submit</button>
                 </form>
@@ -73,6 +76,7 @@ const DetailSection: React.FC<DetailSectionProps> = ({
                     id="calendarModal"
                     conversation={conversation}
                     currentUser={currentUser}
+                    eventDetails={eventDetails}
                 />
 
             </div>

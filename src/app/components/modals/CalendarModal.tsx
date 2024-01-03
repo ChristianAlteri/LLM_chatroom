@@ -4,7 +4,8 @@ import React, { Fragment, useEffect, useRef, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { CgCloseR } from "react-icons/cg";
 import Calendar from "../Calendar";
-import { Conversation, User } from "@prisma/client";
+import { Conversation, EventDetails, User } from "@prisma/client";
+import getEventDetails from "@/app/actions/getEventDetails";
 
 
 
@@ -16,6 +17,7 @@ interface CalendarModalProps {
     users: User[];
   };
   currentUser: User;
+  eventDetails: EventDetails;
 }
 
 const CalendarModal: React.FC<CalendarModalProps> = ({
@@ -23,12 +25,15 @@ const CalendarModal: React.FC<CalendarModalProps> = ({
   id,
   children,
     conversation,
-    currentUser
+    currentUser,
+    eventDetails
 }) => {
   const [modalOpen, setModalOpen] = useState(false);
   const inputRef = useRef<HTMLInputElement>(null);
 
 //   console.log("conversation", conversation);
+//   console.log("eventDetails", eventDetails);
+
 //   console.log("CurrentUser", currentUser);
 
 
