@@ -58,14 +58,14 @@ import { forEach } from 'lodash';
     })
 
     useEffect(() => {
-        eventDetails.potentialDates.forEach((date: any) => {
-          console.log("potentialDate: ", date);
-        });
         console.log("EVENT DETAILS: ", eventDetails);
       }, [eventDetails]);
 
     // Other users days they have selected
     let otherDay = nextSaturday
+    // eventDetails.potentialDates.forEach((date: any) => {
+    //     console.log("potentialDate:", date);
+    //   });
 
     // TODO: fix to corectly show days in the past
     let thePast = days.map(day => day < startOfToday())

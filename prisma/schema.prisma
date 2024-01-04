@@ -28,7 +28,7 @@ model User {
 
   accounts      Account[]
   messages      Message[]
-  // potentialDate PotentialDate[]
+  potentialDate PotentialDate[]
 }
 
 model Account {
@@ -64,34 +64,33 @@ model Conversation {
   messages    Message[]
 
   // eventDetails EventDetails?
-  eventDetailsId String? @db.ObjectId
-  eventDetails   EventDetails? 
+  eventDetailsId String?       @db.ObjectId
+  eventDetails   EventDetails?
 
   userIds String[] @db.ObjectId
   users   User[]   @relation(fields: [userIds], references: [id])
-
 }
 
 model EventDetails {
   id             String          @id @default(auto()) @map("_id") @db.ObjectId
   potentialDates PotentialDate[]
   chosenDate     DateTime?
-  description   String?
+  description    String?
   location       String? // update location to be a geolocation
 
-  conversationId String         @unique @db.ObjectId
+  conversationId String       @unique @db.ObjectId
   conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
-  // conversation   Conversation?  @relation(fields: [conversationId], references: [id])
 }
 
 model PotentialDate {
-  id            String  @id @default(auto()) @map("_id") @db.ObjectId
-  userId        String
+  id     String @id @default(auto()) @map("_id") @db.ObjectId
+  userId String @db.ObjectId
+  user   User   @relation(fields: [userId], references: [id])
 
-  eventDetails  EventDetails @relation(fields: [eventDetailsId], references: [id])
-  eventDetailsId String         @unique @db.ObjectId
+  eventDetails   EventDetails @relation(fields: [eventDetailsId], references: [id])
+  eventDetailsId String       @db.ObjectId
 
-  date          DateTime
+  date DateTime
 }
 
 model Message {
