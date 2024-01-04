@@ -1,3 +1,4 @@
+import { EventDetails } from '@prisma/client';
 import {
     add,
     eachDayOfInterval,
@@ -12,7 +13,8 @@ import {
     nextDay,
     isSameDay
   } from 'date-fns'
-  import { useState } from 'react'
+import { forEach } from 'lodash';
+  import { useEffect, useState } from 'react'
   import { PiArrowCircleLeftLight, PiArrowCircleRightLight } from "react-icons/pi";
 
   
@@ -34,9 +36,15 @@ import {
     
     interface CalendarProps {
       updateSelectedDay: (newSelectedDay: Date) => void;
+      eventDetails: EventDetails;
     }
   
-  export default function Calendar({ updateSelectedDay }: CalendarProps) {
+  export default function Calendar(
+    { 
+        updateSelectedDay, 
+        eventDetails }
+        : CalendarProps) 
+    {
     let today = startOfToday()
     let nextSaturday = nextDay(new Date(today), 6)
     let [selectedDay, setSelectedDay] = useState(today)
@@ -49,6 +57,12 @@ import {
       end: endOfMonth(firstDayCurrentMonth),
     })
 
+    useEffect(() => {
+        eventDetails.potentialDates.forEach((date: any) => {
+          console.log("potentialDate: ", date);
+        });
+        console.log("EVENT DETAILS: ", eventDetails);
+      }, [eventDetails]);
 
     // Other users days they have selected
     let otherDay = nextSaturday

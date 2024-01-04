@@ -7,6 +7,7 @@ import Calendar from "../Calendar";
 import { Conversation, EventDetails, User } from "@prisma/client";
 import getEventDetails from "@/app/actions/getEventDetails";
 
+import { parseISO } from 'date-fns';
 import axios from "axios";
 
 interface CalendarModalProps {
@@ -33,8 +34,7 @@ const CalendarModal: React.FC<CalendarModalProps> = ({
   const inputRef = useRef<HTMLInputElement>(null);
 
   //   console.log("conversation", conversation);
-  //   console.log("eventDetails", eventDetails);
-
+    // console.log("eventDetails", eventDetails);
   //   console.log("CurrentUser", currentUser);
 
   // Form open and close
@@ -53,7 +53,7 @@ const CalendarModal: React.FC<CalendarModalProps> = ({
 
 //   Function to change selected day then uesEffect to watch for changes
   useEffect(() => {
-    console.log("selectedDay from CalendarModal", selectedDay);
+    // console.log("selectedDay from CalendarModal", selectedDay);
   }, [selectedDay]);
 
     const updateSelectedDay = (newSelectedDay: Date) => {
@@ -65,19 +65,19 @@ const CalendarModal: React.FC<CalendarModalProps> = ({
   const submitPotentialDates: React.MouseEventHandler<HTMLButtonElement> = (event) => {
     event.preventDefault();
 
+    const parsedDate =  parseISO(selectedDay!.toISOString());
+
     try {
+        const response = axios.post('/api/event-details/potential-dates', {
+            userId: currentUser.id,
+            conversationId: conversation.id,
+            eventDetailsId: eventDetails.id,
+            date: parsedDate,
 
-        
-        // const response = axios.post('/api/event-details', {
-        //     userId: currentUser.id,
-        //     conversationId: conversation.id,
+        });
 
-        // });
-
-        // Handle the response as needed
         // console.log('Server response:', response);
-
-        console.log("From button", selectedDay);
+        // console.log("From button", selectedDay);
 
     } catch (error) {
       console.error("Error submitting event details:", error);
@@ -171,7 +171,7 @@ const CalendarModal: React.FC<CalendarModalProps> = ({
                   </div>
                   {/* Calendar */}
                   <div>
-                    <Calendar updateSelectedDay={updateSelectedDay} />
+                    <Calendar updateSelectedDay={updateSelectedDay} eventDetails={eventDetails}/>
                     {/* Sub potential dates button */}
                     <div className="flex flex-row w-full gap-5 justify-end">
                         <button
