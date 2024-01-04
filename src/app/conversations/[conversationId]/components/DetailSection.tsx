@@ -2,7 +2,10 @@
 
 import React, { useState } from 'react';
 import { Conversation, EventDetails, User } from "@prisma/client";
+
 import CalendarModal from '@/app/components/modals/CalendarModal';
+import Button from '@/app/components/Button';
+
 import axios from 'axios';
 
 interface DetailSectionProps {
@@ -70,7 +73,7 @@ const DetailSection: React.FC<DetailSectionProps> = ({
                     />
                     <button type="submit">Submit</button>
                 </form>
-
+                
                 <CalendarModal
                     label="CalendarModal"
                     id="calendarModal"

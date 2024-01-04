@@ -30,7 +30,7 @@ export async function POST(request: Request) {
     });
     const eventDetailsId = updatedEventDetails.id;
 
-    // Explicitly update the associated Conversation with the eventId
+    // Link the Conversation with the event detail
     const updatedConversation = await prisma.conversation.update({
       where: {
         id: conversationId,

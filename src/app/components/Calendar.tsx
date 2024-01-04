@@ -17,23 +17,26 @@ import {
 
   
   let colStartClasses = [
-    '',
-    'col-start-2',
-    'col-start-3',
-    'col-start-4',
-    'col-start-5',
-    'col-start-6',
-    'col-start-7',
-  ]
+      '',
+      'col-start-2',
+      'col-start-3',
+      'col-start-4',
+      'col-start-5',
+      'col-start-6',
+      'col-start-7',
+    ]
+    
+    
+    function classNames(...classes: any[]) {
+        // console.log(classes);
+        return classes.filter(Boolean).join(' ')
+    }
+    
+    interface CalendarProps {
+      updateSelectedDay: (newSelectedDay: Date) => void;
+    }
   
-  
-  function classNames(...classes: any[]) {
-    // console.log(classes);
-    return classes.filter(Boolean).join(' ')
-  }
-  
-  
-  export default function Calendar() {
+  export default function Calendar({ updateSelectedDay }: CalendarProps) {
     let today = startOfToday()
     let nextSaturday = nextDay(new Date(today), 6)
     let [selectedDay, setSelectedDay] = useState(today)
@@ -50,6 +53,7 @@ import {
     // Other users days they have selected
     let otherDay = nextSaturday
 
+    // TODO: fix to corectly show days in the past
     let thePast = days.map(day => day < startOfToday())
   
     function previousMonth() {
@@ -62,8 +66,8 @@ import {
       setCurrentMonth(format(firstDayNextMonth, 'MMM-yyyy'))
     }
     
-    console.log("selectedDay", selectedDay);
-    console.log("otherDay", otherDay);
+    // console.log("selectedDay", selectedDay);
+    // console.log("otherDay", otherDay);
   
     return (
       <div className="flex flex-col p-2">
@@ -114,7 +118,10 @@ import {
                   >
                     <button
                       type="button"
-                      onClick={() => setSelectedDay(day)}
+                      onClick={() => {
+                          setSelectedDay(day);
+                          updateSelectedDay(day);
+                      }}
                       className={classNames(
                           // hover
                           !isEqual(day, selectedDay) && 'hover:bg-blue-100',
