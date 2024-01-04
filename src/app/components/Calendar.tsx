@@ -16,6 +16,7 @@ import {
 import { forEach } from 'lodash';
   import { useEffect, useState } from 'react'
   import { PiArrowCircleLeftLight, PiArrowCircleRightLight } from "react-icons/pi";
+import getPotentialDatesByEventId from '../actions/getPotentialDatesByEventId';
 
   
   let colStartClasses = [
@@ -46,9 +47,11 @@ import { forEach } from 'lodash';
         : CalendarProps) 
     {
     let today = startOfToday()
+    // let potentialDatesForEvent = getPotentialDatesByEventId(eventDetails.id)
     let nextSaturday = nextDay(new Date(today), 6)
     let [selectedDay, setSelectedDay] = useState(today)
     let [currentMonth, setCurrentMonth] = useState(format(today, 'MMM-yyyy'))
+    let [dateArray, setDateArray] = useState<Date[]>([]);
     let firstDayCurrentMonth = parse(currentMonth, 'MMM-yyyy', new Date())
     
   
@@ -59,10 +62,25 @@ import { forEach } from 'lodash';
 
     useEffect(() => {
         console.log("EVENT DETAILS: ", eventDetails);
+        //@ts-ignore
+        const potentialDates = eventDetails?.potentialDates; // Use optional chaining to handle potential null or undefined
+        let tempDateArray: Date[] = [];
+      
+        if (potentialDates) {
+            potentialDates.forEach((potentialDate: any) => {
+              const date = potentialDate.date;
+              tempDateArray.push(date);
+            });
+            setDateArray(tempDateArray); // Set the state variable with the updated dateArray
+            console.log("dateArray", tempDateArray);
+        }
       }, [eventDetails]);
 
-    // Other users days they have selected
-    let otherDay = nextSaturday
+      let otherDay = nextSaturday
+      
+
+    
+    // console.log("potentialDatesForEvent", potentialDatesForEvent);
     // eventDetails.potentialDates.forEach((date: any) => {
     //     console.log("potentialDate:", date);
     //   });
@@ -137,6 +155,8 @@ import { forEach } from 'lodash';
                           updateSelectedDay(day);
                       }}
                       className={classNames(
+                        dateArray.some((potentialDate) => isSameDay(day, potentialDate)) &&
+                        'bg-yellow-500 border-2',
                           // hover
                           !isEqual(day, selectedDay) && 'hover:bg-blue-100',
                           (isEqual(day, selectedDay) || isToday(day)) &&
