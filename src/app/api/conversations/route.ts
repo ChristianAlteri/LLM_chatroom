@@ -31,6 +31,7 @@ export async function POST(
         data: {
           name,
           isGroup,
+          creatorId: currentUser.id,
           users: {
             connect: [
               ...members.map((member: { value: string }) => ({  
@@ -53,7 +54,7 @@ export async function POST(
           pusherServer.trigger(user.email, 'conversation:new', newConversation);
         }
       });
-
+        // console.log("newConversation", newConversation)
       return NextResponse.json(newConversation);
     }
 
@@ -82,6 +83,7 @@ export async function POST(
 
     const newConversation = await prisma.conversation.create({
       data: {
+        creatorId: currentUser.id,
         users: {
           connect: [
             {

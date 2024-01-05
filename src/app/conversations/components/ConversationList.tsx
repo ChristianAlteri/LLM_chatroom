@@ -27,6 +27,7 @@ const ConversationsList: React.FC<ConversationListProps> = ({
 }) => {
     const session = useSession();
     const [items, setItems] = useState(initialItems);
+    // console.log("conversations", items);
     const [isModalOpen, setIsModalOpen] = useState(false);
     
     const router = useRouter();

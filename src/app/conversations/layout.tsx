@@ -11,8 +11,8 @@ export default async function ConversationsLayout({
     children: React.ReactNode
 }) {
     const conversations = await getConversations();
+    // console.log('conversations', conversations);
     const users = await getUsers();
-
     return (
         // @ts-ignore
         <Sidebar> 

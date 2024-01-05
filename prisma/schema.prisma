@@ -63,10 +63,11 @@ model Conversation {
   messagesIds String[]  @db.ObjectId
   messages    Message[]
 
-  // eventDetails EventDetails?
+
   eventDetailsId String?       @db.ObjectId
   eventDetails   EventDetails?
 
+  creatorId String? @db.ObjectId
   userIds String[] @db.ObjectId
   users   User[]   @relation(fields: [userIds], references: [id])
 }
