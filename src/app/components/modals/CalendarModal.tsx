@@ -245,7 +245,7 @@ useEffect(() => {
                             gap-9
                             p-5
                          " > 
-                         <DateSideBar dateMap={dateMap} /> 
+                         <DateSideBar dateMap={dateMap} eventDetails={eventDetails} /> 
                   {/* Container for calander */}
                     <div
                     className="
