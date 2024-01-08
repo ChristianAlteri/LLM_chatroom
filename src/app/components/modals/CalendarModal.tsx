@@ -36,6 +36,7 @@ const CalendarModal: React.FC<CalendarModalProps> = ({
   let [admin, setAdmin] = useState(false);
   let [dateArray, setDateArray] = useState<Date[]>([]);
   let [dateMap, setDateMap] = useState(new Map());
+//   let [chosenDate, setChosenDate] = useState<Date | null>(null);
 
   //   console.log("conversation", conversation);
     // console.log("eventDetails", eventDetails);
@@ -102,7 +103,7 @@ useEffect(() => {
     }
 }, [admin]);
 
-  //   Handles submission of calendar details
+  //   Handles submission of Potential Dates in the Event Details DB
   const submitPotentialDates: React.MouseEventHandler<HTMLButtonElement> = (event) => {
     event.preventDefault();
 
@@ -117,13 +118,41 @@ useEffect(() => {
 
         });
 
-        // console.log('Server response:', response);
-        // console.log("From button", selectedDay);
 
     } catch (error) {
       console.error("Error submitting event details:", error);
     }
   };
+
+//   Handles submission of Choose Date in the Event Details DB
+  const chooseDate: React.MouseEventHandler<HTMLButtonElement> = (event) => {
+    event.preventDefault();
+    
+    const parsedDate =  parseISO(selectedDay!.toISOString());
+    console.log("Choose date", parsedDate);
+
+    try {
+        const response = axios.post('/api/event-details/chosen-date', {
+            userId: currentUser.id,
+            conversationId: conversation.id,
+            eventDetailsId: eventDetails.id,
+            date: parsedDate,
+
+        });
+
+        console.log('Server response:', response.then((res) => console.log(res.data)));
+
+
+    } catch (error) {
+      console.error("Error submitting event details:", error);
+    }
+  };
+
+//   useEffect(() => {
+//     const chosenDate = eventDetails?.chosenDate
+//     setChosenDate(chosenDate)
+
+//   }, [chosenDate])
 
   return (
     <>
@@ -247,19 +276,19 @@ useEffect(() => {
                             border-slate-300
                             rounded-md
                             hover:border-slate-900
-                            hover:bg-blue-100
+                            hover:bg-amber-200
                             "
                             onClick={submitPotentialDates}
                             >
                             Submit potential dates
                             </button>
                         </div>
+                        {/* If admin they can select a date */}
                         {admin && (
                             <div className="flex flex-col w-full gap-5 justify-end">
                                 <button
                                 className="
                                 flex
-                                
                                 justify-center
                                 p-2
                                 border
@@ -268,7 +297,7 @@ useEffect(() => {
                                 hover:border-slate-900
                                 hover:bg-green-100
                                 "
-                                onClick={submitPotentialDates}
+                                onClick={chooseDate}
                                 >
                                 Choose date
                                 </button>

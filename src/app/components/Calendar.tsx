@@ -13,7 +13,7 @@ import {
   nextDay,
   isSameDay,
 } from "date-fns";
-import { forEach } from "lodash";
+import { forEach, set } from "lodash";
 import { useEffect, useState } from "react";
 import {
   PiArrowCircleLeftLight,
@@ -54,6 +54,7 @@ export default function Calendar({
 }: CalendarProps) {
   let today = startOfToday();
   let [admin, setAdmin] = useState(false);
+  let [chosenDate, setChosenDate] = useState<Date | null>(null);
   let [selectedDay, setSelectedDay] = useState(today);
   let [currentMonth, setCurrentMonth] = useState(format(today, "MMM-yyyy"));
   let [dateArray, setDateArray] = useState<Date[]>([]);
@@ -103,6 +104,11 @@ export default function Calendar({
     }
   }, [admin]);
 
+  useEffect(() => {
+    const chosenDate = eventDetails?.chosenDate
+    setChosenDate(chosenDate)
+  }, [chosenDate])
+
   function previousMonth() {
     let firstDayNextMonth = add(firstDayCurrentMonth, { months: -1 });
     setCurrentMonth(format(firstDayNextMonth, "MMM-yyyy"));
@@ -113,8 +119,6 @@ export default function Calendar({
     setCurrentMonth(format(firstDayNextMonth, "MMM-yyyy"));
   }
 
-  // console.log("selectedDay", selectedDay);
-  // console.log("otherDay", otherDay);
 
   return (
     <div className="flex flex-col p-2">
@@ -170,7 +174,7 @@ export default function Calendar({
               className={classNames(
                 dateArray.some((potentialDate) =>
                   isSameDay(day, potentialDate)
-                ) && "bg-yellow-500 border-2",
+                ) && "bg-amber-300 border-2",
                 // hover
                 !isEqual(day, selectedDay) && "hover:bg-blue-100",
                 (isEqual(day, selectedDay) || isToday(day)) && "font-semibold",
@@ -208,8 +212,10 @@ export default function Calendar({
                   "bg-blue-300 border-2",
 
                 // mark days in the past as red
-                day < startOfToday() && "bg-red-100 border-2",
-                "mx-auto flex h-8 w-8 items-center justify-center rounded-full"
+                day < startOfToday() && "bg-slate-100 border-2",
+                "mx-auto flex h-8 w-8 items-center justify-center rounded-full",
+                // If Chosen date
+                isEqual(day, chosenDate!) && "bg-emerald-400 border-2 text-white"
               )}
             >
               <time dateTime={format(day, "yyyy-MM-dd")}>

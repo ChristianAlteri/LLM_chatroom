@@ -214,8 +214,9 @@ const ProfileDrawer: React.FC<ProfileDrawerProps> = ({
                                                         hover:text-slate-900
                                                         hover:underline
                                                         ">
-                                                            Delete conversation
+                                                            Delete conversation 
                                                         </div>
+                                                        <div>Add click if going functionality by referencing eventDetails property called going which is an array of user id</div>
                                                     </div>
                                                 </div>
                                                 <div
