@@ -73,7 +73,7 @@ const DetailSection: React.FC<DetailSectionProps> = ({
           <form onSubmit={handleSubmit}>
             <input
               type="text"
-              placeholder="Pin a header "
+              placeholder="Pin a header"
               value={description}
               onChange={handleEventDescription}
             />

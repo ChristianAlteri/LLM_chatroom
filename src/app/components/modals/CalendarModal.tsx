@@ -15,6 +15,7 @@ interface CalendarModalProps {
   label: string;
   id: string;
   children?: React.ReactNode;
+  onSelectedChange?: (newSelected: any) => void;
   conversation: Conversation & {
     users: User[];
   };
@@ -26,6 +27,7 @@ const CalendarModal: React.FC<CalendarModalProps> = ({
   label,
   id,
   children,
+  onSelectedChange,
   conversation,
   currentUser,
   eventDetails,
@@ -41,6 +43,7 @@ const CalendarModal: React.FC<CalendarModalProps> = ({
   //   console.log("conversation", conversation);
     // console.log("eventDetails", eventDetails);
   //   console.log("CurrentUser", currentUser);
+  
 
   // Form open and close
   const closeModal = () => {
@@ -245,7 +248,12 @@ useEffect(() => {
                             gap-9
                             p-5
                          " > 
-                         <DateSideBar dateMap={dateMap} eventDetails={eventDetails} /> 
+                         <DateSideBar 
+                            dateMap={dateMap} 
+                            eventDetails={eventDetails} 
+                            conversation={conversation} 
+                            currentUser={currentUser} 
+                            onSelectedChange={onSelectedChange!}/> 
                   {/* Container for calander */}
                     <div
                     className="
