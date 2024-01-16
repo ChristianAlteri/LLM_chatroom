@@ -7,7 +7,7 @@ import Calendar from "../Calendar";
 import { Conversation, EventDetails, User } from "@prisma/client";
 import getEventDetails from "@/app/actions/getEventDetails";
 
-import { parseISO } from 'date-fns';
+import { parseISO } from "date-fns";
 import axios from "axios";
 import DateSideBar from "../DateSideBar";
 
@@ -15,7 +15,6 @@ interface CalendarModalProps {
   label: string;
   id: string;
   children?: React.ReactNode;
-  onSelectedChange?: (newSelected: any) => void;
   conversation: Conversation & {
     users: User[];
   };
@@ -27,7 +26,6 @@ const CalendarModal: React.FC<CalendarModalProps> = ({
   label,
   id,
   children,
-  onSelectedChange,
   conversation,
   currentUser,
   eventDetails,
@@ -38,12 +36,11 @@ const CalendarModal: React.FC<CalendarModalProps> = ({
   let [admin, setAdmin] = useState(false);
   let [dateArray, setDateArray] = useState<Date[]>([]);
   let [dateMap, setDateMap] = useState(new Map());
-//   let [chosenDate, setChosenDate] = useState<Date | null>(null);
+  //   let [chosenDate, setChosenDate] = useState<Date | null>(null);
 
   //   console.log("conversation", conversation);
-    // console.log("eventDetails", eventDetails);
+  // console.log("eventDetails", eventDetails);
   //   console.log("CurrentUser", currentUser);
-  
 
   // Form open and close
   const closeModal = () => {
@@ -59,9 +56,9 @@ const CalendarModal: React.FC<CalendarModalProps> = ({
     }
   }, []);
 
-/* Potential Date Array */  
-//   Watch for changes to potential dates and update the dateArray
-useEffect(() => {
+  /* Potential Date Array */
+  //   Watch for changes to potential dates and update the dateArray
+  useEffect(() => {
     // console.log("EVENT DETAILS: ", eventDetails);
     //@ts-ignore
     const potentialDates = eventDetails?.potentialDates;
@@ -73,12 +70,12 @@ useEffect(() => {
         tempDateArray.push(date);
       });
       setDateArray(tempDateArray);
-    //   console.log("dateArray", tempDateArray);
+      //   console.log("dateArray", tempDateArray);
     }
   }, [eventDetails]);
 
-  /* Potential Date Map */  
-// Watch for dateArray changes and update the dateMap
+  /* Potential Date Map */
+  // Watch for dateArray changes and update the dateMap
   useEffect(() => {
     const dateCountMap = new Map();
 
@@ -90,72 +87,81 @@ useEffect(() => {
     // console.log("dateMap", dateMap);
   }, [dateArray]);
 
-
-//   Function to change selected day then uesEffect to watch for changes
+  //   Function to change selected day then uesEffect to watch for changes
   useEffect(() => {
     // console.log("selectedDay from CalendarModal", selectedDay);
   }, [selectedDay]);
-    const updateSelectedDay = (newSelectedDay: Date) => {
-        setSelectedDay(newSelectedDay);
-    };
 
-    //   Creating an ADMIN
+  const updateSelectedDay = (newSelectedDay: Date) => {
+    setSelectedDay(newSelectedDay);
+  };
+
+  const updateDateSideBarSelection = (newSelectedDay: Date) => {
+    setSelectedDay(newSelectedDay);
+  };
+
+  //   Creating an ADMIN
   useEffect(() => {
     if (currentUser?.id === conversation?.creatorId) {
       setAdmin(true);
     }
-}, [admin]);
+  }, [admin]);
 
   //   Handles submission of Potential Dates in the Event Details DB
-  const submitPotentialDates: React.MouseEventHandler<HTMLButtonElement> = (event) => {
+  const submitPotentialDates: React.MouseEventHandler<HTMLButtonElement> = (
+    event
+  ) => {
     event.preventDefault();
 
-    const parsedDate =  parseISO(selectedDay!.toISOString());
+    const parsedDate = parseISO(selectedDay!.toISOString());
 
     try {
-        const response = axios.post('/api/event-details/potential-dates', {
-            userId: currentUser.id,
-            conversationId: conversation.id,
-            eventDetailsId: eventDetails.id,
-            date: parsedDate,
-
-        });
-
-
+      const response = axios.post("/api/event-details/potential-dates", {
+        userId: currentUser.id,
+        conversationId: conversation.id,
+        eventDetailsId: eventDetails.id,
+        date: parsedDate,
+      });
     } catch (error) {
       console.error("Error submitting event details:", error);
     }
   };
 
-//   Handles submission of Choose Date in the Event Details DB
+
+  //   Handles submission of Choose Date in the Event Details DB
   const chooseDate: React.MouseEventHandler<HTMLButtonElement> = (event) => {
     event.preventDefault();
-    
-    const parsedDate =  parseISO(selectedDay!.toISOString());
-    console.log("Choose date", parsedDate);
+    let parsedDate;
+    // console.log("BUTTON", selectedDay);
+    if (typeof selectedDay !== "string") {
+      parsedDate = parseISO(selectedDay!.toISOString());
+      console.log("Chosen date from calendar", parsedDate);
+    }
+    console.log("Chosen date from DateSidebar", selectedDay);
 
     try {
-        const response = axios.post('/api/event-details/chosen-date', {
-            userId: currentUser.id,
-            conversationId: conversation.id,
-            eventDetailsId: eventDetails.id,
-            date: parsedDate,
+      const response = axios.post("/api/event-details/chosen-date", {
+        userId: currentUser.id,
+        conversationId: conversation.id,
+        eventDetailsId: eventDetails.id,
+        date: parsedDate || selectedDay,
+      });
 
-        });
-
-        console.log('Server response:', response.then((res) => console.log(res.data)));
-
-
+      console.log(
+        "Server response:",
+        response.then((res) => console.log(res.data))
+      );
     } catch (error) {
       console.error("Error submitting event details:", error);
     }
-  };
+  }; 
+    
 
-//   useEffect(() => {
-//     const chosenDate = eventDetails?.chosenDate
-//     setChosenDate(chosenDate)
+  //   useEffect(() => {
+  //     const chosenDate = eventDetails?.chosenDate
+  //     setChosenDate(chosenDate)
 
-//   }, [chosenDate])
+  //   }, [chosenDate])
 
   return (
     <>
@@ -218,64 +224,64 @@ useEffect(() => {
                   {/* Components container */}
                   <div className="w-full h-full flex flex-col">
                     {/*  Buttons */}
-                        <div className="flex flex-row w-full gap-4 items-center p-1 justify-between text-slate-900">
-                        <h1 className="font-bold ">Calendar</h1>
-                        <div>Filter by attendee</div>
-                        <div>Log your calendar in</div>
-                        <button
-                            type="button"
-                            onClick={closeModal}
-                            className="
+                    <div className="flex flex-row w-full gap-4 items-center p-1 justify-between text-slate-900">
+                      <h1 className="font-bold ">Calendar</h1>
+                      <div>Filter by attendee</div>
+                      <div>Log your calendar in</div>
+                      <button
+                        type="button"
+                        onClick={closeModal}
+                        className="
                             items-end
                             rounded-md 
                             bg-slate-50 
                             text-slate-400 
                             hover:text-black
                             "
-                        >
-                            <span className="sr-only">Close</span>
-                            <CgCloseR
-                            className="bg-blue-50 h-6 w-6"
-                            aria-hidden="true"
-                            />
-                        </button>
-                        </div>
-                            <div className="
+                      >
+                        <span className="sr-only">Close</span>
+                        <CgCloseR
+                          className="bg-blue-50 h-6 w-6"
+                          aria-hidden="true"
+                        />
+                      </button>
+                    </div>
+                    <div
+                      className="
                             flex
                             flex-row
                             w-full
                             justify-center
                             gap-9
                             p-5
-                         " > 
-                         <DateSideBar 
-                            dateMap={dateMap} 
-                            eventDetails={eventDetails} 
-                            conversation={conversation} 
-                            currentUser={currentUser} 
-                            onSelectedChange={onSelectedChange!}/> 
-                  {/* Container for calander */}
-                    <div
-                    className="
-                    flex
-                    flex-col
-                    "
+                         "
                     >
-                        
-                        TOP
-                    <div>
-                  </div>
-                    {/* Calendar */}
-                        
-                        <Calendar 
-                        updateSelectedDay={updateSelectedDay} 
+                      <DateSideBar
+                        dateMap={dateMap}
                         eventDetails={eventDetails}
                         conversation={conversation}
                         currentUser={currentUser}
+                        updateDateSideBarSelection={updateDateSideBarSelection}
+                      />
+                      {/* Container for calander */}
+                      <div
+                        className="
+                    flex
+                    flex-col
+                    "
+                      >
+                        TOP
+                        <div></div>
+                        {/* Calendar */}
+                        <Calendar
+                          updateSelectedDay={updateSelectedDay}
+                          eventDetails={eventDetails}
+                          conversation={conversation}
+                          currentUser={currentUser}
                         />
                         {/* Sub potential dates button */}
                         <div className="flex flex-col w-full gap-5 justify-end">
-                            <button
+                          <button
                             className="
                             flex
                             justify-center
@@ -287,15 +293,15 @@ useEffect(() => {
                             hover:bg-amber-200
                             "
                             onClick={submitPotentialDates}
-                            >
+                          >
                             Submit potential dates
-                            </button>
+                          </button>
                         </div>
                         {/* If admin they can select a date */}
                         {admin && (
-                            <div className="flex flex-col w-full gap-5 justify-end">
-                                <button
-                                className="
+                          <div className="flex flex-col w-full gap-5 justify-end">
+                            <button
+                              className="
                                 flex
                                 justify-center
                                 p-2
@@ -305,19 +311,19 @@ useEffect(() => {
                                 hover:border-slate-900
                                 hover:bg-green-100
                                 "
-                                onClick={chooseDate}
-                                >
-                                Choose date
-                                </button>
-                            </div>
-                            )}
+                              onClick={chooseDate}
+                            >
+                              Choose date
+                            </button>
+                          </div>
+                        )}
+                      </div>
                     </div>
-                    </div>
-                    </div>
-                    {/* Submit button */}
-                    <div className="flex flex-row w-full gap-5 justify-end">
-                        <button
-                            className="
+                  </div>
+                  {/* Submit button */}
+                  <div className="flex flex-row w-full gap-5 justify-end">
+                    <button
+                      className="
                             flex flex-row gap-5 justify-end
                             p-2
                             border
@@ -326,13 +332,13 @@ useEffect(() => {
                             hover:border-slate-900
                             hover:bg-emerald-100
                             "
-                            onClick={() => console.log("Submit button")}
-                            >
-                            Submit
-                            </button>
-                        </div>
-                    </div>
+                      onClick={() => console.log("Submit button")}
+                    >
+                      Submit
+                    </button>
+                  </div>
                 </div>
+              </div>
             </Dialog>
           </Transition.Root>
         </div>

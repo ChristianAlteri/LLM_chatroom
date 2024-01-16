@@ -11,19 +11,19 @@ import { parseISO } from "date-fns";
 interface DateSideBarProps {
   dateMap: Map<string, number>;
   eventDetails: EventDetails;
-  onSelectedChange: (newSelected: any) => void;
   conversation: Conversation & {
     users: User[];
   };
   currentUser: User;
+  updateDateSideBarSelection: (newSelectedDay: Date) => void;
 }
 
 const DateSideBar: React.FC<DateSideBarProps> = ({
   dateMap,
   eventDetails,
-  onSelectedChange,
   conversation,
   currentUser,
+  updateDateSideBarSelection,
 }) => {
   useEffect(() => {
     const sortedDates = Array.from(dateMap.entries()).sort(
@@ -62,32 +62,38 @@ const DateSideBar: React.FC<DateSideBarProps> = ({
     setChosenDate(chosenDate);
   }, [chosenDate]);
 
+
   //   useEffect(() => {
   //     onSelectedChange && onSelectedChange(selected);
   //     // console.log(selected, "from DateSideBar");
   //   }, [selected, onSelectedChange]);
+  
 
-  //   Handles submission of Choose Date in the Event Details DB
-  const chooseDate: React.MouseEventHandler<HTMLDivElement> = (event) => {
-    event.preventDefault();
+/* 
 
-    const parsedDate =  parseISO(selected[0]!.toString());
+    //   Handles submission of Choose Date in the Event Details DB
+    //   const chooseDate: React.MouseEventHandler<HTMLDivElement> = (event) => {
+    //     event.preventDefault();
 
-    // console.log("Choose date", parsedDate);
-    try {
-      const response = axios.post('/api/event-details/chosen-date', {
-          userId: currentUser.id,
-          conversationId: conversation.id,
-          eventDetailsId: eventDetails.id,
-          date: parsedDate,
+    //     const parsedDate =  parseISO(selected[0]!.toString());
 
-      });
+    //     // console.log("Choose date", parsedDate);
+    //     try {
+    //       const response = axios.post('/api/event-details/chosen-date', {
+    //           userId: currentUser.id,
+    //           conversationId: conversation.id,
+    //           eventDetailsId: eventDetails.id,
+    //           date: parsedDate,
 
-      console.log('Server response:', response.then((res) => console.log(res.data)));
-    } catch (error) {
-      console.error("Error submitting event details:", error);
-    }
-  };
+    //       });
+
+    //       console.log('Server response:', response.then((res) => console.log(res.data)));
+    //     } catch (error) {
+    //       console.error("Error submitting event details:", error);
+    //     }
+    //   };
+
+ */
 
   return (
     <div className="border-r border-slate-600 overflow-y-auto">
@@ -104,17 +110,18 @@ const DateSideBar: React.FC<DateSideBarProps> = ({
                   className={({ checked, active }) =>
                     `${
                       checked
-                        ? "bg-sky-900/75 text-white"
+                        ? " text-white"
                         : isDateChosen(date)
-                        ? "bg-green-500 text-white"
+                        ? "bg-emerald-200 text-white"
                         : "bg-white"
                     }
-                    relative flex cursor-pointer rounded-lg px-5 py-4 shadow-md focus:outline-none
+                    relative border flex cursor-pointer rounded-lg px-5 py-4  hover:bg-blue-100 hover:border-slate-900 focus:outline-none
                     ${
-                        active ? "ring ring-sky-300" : ""}`
+                        active ? "bg-sky-200 text-white border border-slate-900" : ""}`
                   }
                   onClick={(event) => {
-                    chooseDate(event);
+                    const parsedDate = parseISO(date);
+                    updateDateSideBarSelection(parsedDate);
                   }}
                 >
                   {({ checked }) => (
