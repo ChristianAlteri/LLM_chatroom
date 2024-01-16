@@ -172,7 +172,7 @@ const CalendarModal: React.FC<CalendarModalProps> = ({
         "
         onClick={openModal}
       >
-        Calendar
+        Edit Details
       </div>
 
       <div className="modal-overlay">
@@ -246,6 +246,10 @@ const CalendarModal: React.FC<CalendarModalProps> = ({
                         />
                       </button>
                     </div>
+                      <div className="flex flex-col gap-10 m-10" >
+                        <div className="hover:underline hover:cursor-pointer" >TOGGLE REMINDERS</div>
+                        <div className="hover:underline hover:cursor-pointer" >TOGGLE SPLIT WISE</div>
+                      </div>
                     <div
                       className="
                             flex
@@ -270,8 +274,7 @@ const CalendarModal: React.FC<CalendarModalProps> = ({
                     flex-col
                     "
                       >
-                        TOP
-                        <div></div>
+                        <div className="hover:underline hover:cursor-pointer"> TOGGLE CALENDAR </div> 
                         {/* Calendar */}
                         <Calendar
                           updateSelectedDay={updateSelectedDay}

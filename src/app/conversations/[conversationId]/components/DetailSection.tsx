@@ -8,6 +8,8 @@ import Button from "@/app/components/Button";
 
 import axios from "axios";
 
+import { format } from "date-fns";
+
 interface DetailSectionProps {
   conversation: Conversation & {
     users: User[];
@@ -55,6 +57,11 @@ const DetailSection: React.FC<DetailSectionProps> = ({
     }
   };
 
+  const formattedChosenDate =
+  eventDetails?.chosenDate &&
+  format(new Date(eventDetails.chosenDate), "MM/dd/yyyy");
+
+
   return (
     <>
       <div
@@ -68,9 +75,10 @@ const DetailSection: React.FC<DetailSectionProps> = ({
             border-slate-900
             "
       >
-        <h1>{eventDetails?.description!}</h1>
+        <div className="flex p-4">Chosen date: {formattedChosenDate}</div>
+        <h1 className="flex p-4">{eventDetails?.description!}</h1>
         {admin && (
-          <form onSubmit={handleSubmit}>
+          <form className="flex p-4" onSubmit={handleSubmit}>
             <input
               type="text"
               placeholder="Pin a header"

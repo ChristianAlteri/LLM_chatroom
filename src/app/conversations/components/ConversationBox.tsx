@@ -79,7 +79,7 @@ const ConversationBox: React.FC<ConversationBoxProps> = ({
       return lastMessage?.body
     }
 
-    return 'Started a conversation';
+    return 'New chat created';
   }, [lastMessage]);
 
 
