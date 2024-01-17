@@ -42,36 +42,6 @@ const ConversationBox: React.FC<ConversationBoxProps> = ({
   }, []);
 
 
-
-
-  // const invokeOpenAI = async () => {
-  //   const apiKey = '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'; 
-  //   const apiUrl = 'https://api.openai.com/v1/engines/davinci/completions';
-
-  //   const prompt = `explain Hello World`;
-
-  //   try {
-  //     const response = await axios.post(
-  //       apiUrl,
-  //       {
-  //         prompt,
-  //         max_tokens: 150,
-  //       },
-  //       {
-  //         headers: {
-  //           'Content-Type': 'application/json',
-  //           'Authorization': `Bearer ${apiKey}`,
-  //         },
-  //       }
-  //     );
-
-  //     console.log('Generated text:', response.data.choices[0].text);
-  //     // You can do something with the generated text, e.g., display it in the UI
-  //   } catch (error) {
-  //     console.error('Error invoking OpenAI API:');
-  //   }
-  // };
-
   const lastMessage = useMemo(() => {
     // || so it doesn't break if msg empty
     const messages = data.messages || [];
