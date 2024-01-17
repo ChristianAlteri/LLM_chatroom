@@ -5,6 +5,8 @@ import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 
 import { format } from "date-fns";
+import axios from "axios";
+
 import clsx from "clsx";
 
 import { Conversation, Message, User } from "@prisma/client";
@@ -26,25 +28,49 @@ const ConversationBox: React.FC<ConversationBoxProps> = ({
   const session = useSession();
   const router = useRouter();
 
-  const handleClickCatchUp = useCallback(() => {
-    /*
-    // router.push(`/conversations/${data.id}/summary`);
 
-    TODO: Mark seen to be true when catch up is clicked
-
-    You have hasSeen so you need to extract has 
-    not seen and query a llm to give you a summary 
-    of hasNotSeen messages. 
-    This way you ensure individual context.
-
-    */
-    window.location.href = 'https://www.openai.com';
-  }, []);
-
+  // Re routes to the conversation 
   const handleClick = useCallback(() => {
-    console.log('contact clicked', data.id);
+    console.log('Data passed', data);
     router.push(`/conversations/${data.id}`);
   }, [data.id, router]);
+
+ // Re routes to the conversation summary
+  const handleClickCatchUp = useCallback(() => {
+    // console.log('Catch up clicked', data);
+    router.push(`/conversations/${data.id}/summary`);
+  }, []);
+
+
+
+
+  // const invokeOpenAI = async () => {
+  //   const apiKey = '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'; 
+  //   const apiUrl = 'https://api.openai.com/v1/engines/davinci/completions';
+
+  //   const prompt = `explain Hello World`;
+
+  //   try {
+  //     const response = await axios.post(
+  //       apiUrl,
+  //       {
+  //         prompt,
+  //         max_tokens: 150,
+  //       },
+  //       {
+  //         headers: {
+  //           'Content-Type': 'application/json',
+  //           'Authorization': `Bearer ${apiKey}`,
+  //         },
+  //       }
+  //     );
+
+  //     console.log('Generated text:', response.data.choices[0].text);
+  //     // You can do something with the generated text, e.g., display it in the UI
+  //   } catch (error) {
+  //     console.error('Error invoking OpenAI API:');
+  //   }
+  // };
 
   const lastMessage = useMemo(() => {
     // || so it doesn't break if msg empty
@@ -164,7 +190,23 @@ const ConversationBox: React.FC<ConversationBoxProps> = ({
 
 
           {/* Catch up feature - send to a LLM summary */}
-            {!hasSeen && (
+            {/* {!hasSeen && (
+              <span 
+                className="
+                text-xs 
+                p-1
+                text-slate-300 
+                hover:text-black 
+                hover:underline"
+                onClick={handleClickCatchUp}
+                >
+                  Catch up
+              </span>
+            )} */}
+        </div>
+      </div>
+    </div>
+    {!hasSeen && (
               <span 
                 className="
                 text-xs 
@@ -177,9 +219,6 @@ const ConversationBox: React.FC<ConversationBoxProps> = ({
                   Catch up
               </span>
             )}
-        </div>
-      </div>
-    </div>
     </div>
   );
 };
