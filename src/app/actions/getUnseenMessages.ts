@@ -12,17 +12,6 @@ const getUnseenMessages = async (
         const messages = await prisma.message.findMany({
             where: {
                 conversationId: conversationId,
-                seen: {
-                    some: {
-                        userId: {
-                            not: currentUser
-                        }
-                    } as Prisma.UserWhereInput
-                }
-            },
-            include: {
-                sender: true,
-                seen: true
             },
             orderBy: {
                 createdAt: 'asc'
