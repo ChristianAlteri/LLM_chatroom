@@ -157,22 +157,6 @@ const ConversationBox: React.FC<ConversationBoxProps> = ({
           >
                 {lastMessageText}
           </p>
-
-
-          {/* Catch up feature - send to a LLM summary */}
-            {/* {!hasSeen && (
-              <span 
-                className="
-                text-xs 
-                p-1
-                text-slate-300 
-                hover:text-black 
-                hover:underline"
-                onClick={handleClickCatchUp}
-                >
-                  Catch up
-              </span>
-            )} */}
         </div>
       </div>
     </div>
