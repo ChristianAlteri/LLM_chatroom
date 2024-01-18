@@ -1,5 +1,6 @@
 import React from "react";
 import { PiPersonSimpleThrowDuotone } from "react-icons/pi";
+import Checkbox from "../inputs/CheckBox";
 
 interface RemindersProps {
   admin: boolean; 
@@ -9,16 +10,16 @@ const Reminders: React.FC<RemindersProps> = ({
   admin
 }) => {
   return (
-    <div className="border rounded-md border-slate-600 overflow-y-auto h-1/5">
+    <div className="border rounded-md border-slate-600 overflow-y-auto h-3/3">
       <div className="px-4 py-16 max-w-md mx-auto">
         <div className="space-y-2 flex w-full items-center justify-center">
           <div className="flex items-center overflow-y-auto">
             <div className="text-sm w-full h-full">
-            <div>options</div>
-            <div>options</div>
-            <div>options</div>
-            <div>options</div>
-            <div>options</div>
+              {/* Map over this and pass reminder and completed from DB */}
+            <Checkbox reminder="reminder" completed={true}/>
+            <Checkbox reminder="reminder" completed={false}/>
+            <Checkbox reminder="reminder" completed={true}/>
+            <Checkbox reminder="reminder" completed={true}/>
               {admin && (
               <form
                 className="flex flex-row gap-1 bottom-0 w-full"

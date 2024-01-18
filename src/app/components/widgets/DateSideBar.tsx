@@ -96,7 +96,7 @@ const DateSideBar: React.FC<DateSideBarProps> = ({
  */
 
   return (
-    <div className="border rounded-md border-slate-600 overflow-y-auto h-1/5">
+    <div className="border rounded-md border-slate-600 overflow-y-auto h-1/4">
       <div className="px-4 py-16 ">
         <div className="mx-auto max-w-md">
           <RadioGroup value={selected} onChange={setSelected}>
