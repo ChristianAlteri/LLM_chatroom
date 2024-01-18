@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { Conversation, EventDetails, User } from "@prisma/client";
 
-import CalendarModal from "@/app/components/modals/CalendarModal";
+import CalendarModal from "@/app/components/modals/WidgetModal";
 import Button from "@/app/components/Button";
 
 import axios from "axios";

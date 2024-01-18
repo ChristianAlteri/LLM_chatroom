@@ -14,7 +14,7 @@ import DateSideBar from "../widgets/DateSideBar";
 import Reminders from "../widgets/Reminders";
 import SplitWise from "../widgets/SplitWise";
 
-interface CalendarModalProps {
+interface WidgetModalProps {
   label: string;
   id: string;
   children?: React.ReactNode;
@@ -25,7 +25,7 @@ interface CalendarModalProps {
   eventDetails: EventDetails;
 }
 
-const CalendarModal: React.FC<CalendarModalProps> = ({
+const WidgetModal: React.FC<WidgetModalProps> = ({
   label,
   id,
   children,
@@ -154,7 +154,7 @@ const CalendarModal: React.FC<CalendarModalProps> = ({
         eventDetailsId: eventDetails.id,
         date: parsedDate || selectedDay,
       });
-
+      toast.success("Chosen date submitted!");
       console.log(
         "Server response:",
         response.then((res) => console.log(res.data))
@@ -180,7 +180,7 @@ const CalendarModal: React.FC<CalendarModalProps> = ({
         "
         onClick={openModal}
       >
-        Edit Details
+        Widgets
       </div>
 
       <div className="modal-overlay">
@@ -233,9 +233,8 @@ const CalendarModal: React.FC<CalendarModalProps> = ({
                   <div className="w-full h-full flex flex-col">
                     {/*  Buttons */}
                     <div className="flex flex-row w-full gap-4 items-center p-4 justify-between text-slate-900">
-                      <h1 className="font-bold ">Calendar</h1>
-                      <div>Filter by attendee</div>
-                      <div>Log your calendar in</div>
+                      <h1 className="font-bold">Widgets</h1>
+                      
                       <button
                         type="button"
                         onClick={closeModal}
@@ -391,6 +390,7 @@ const CalendarModal: React.FC<CalendarModalProps> = ({
                       Submit
                     </button>
                   </div>
+                    <div>Sync your calendar</div>
                 </div>
               </div>
             </Dialog>
@@ -401,4 +401,4 @@ const CalendarModal: React.FC<CalendarModalProps> = ({
   );
 };
 
-export default CalendarModal;
+export default WidgetModal;
