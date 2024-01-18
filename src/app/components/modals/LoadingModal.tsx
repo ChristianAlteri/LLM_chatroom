@@ -1,11 +1,14 @@
 'use client'
 
-import React, { Fragment } from 'react'
+import React, { Fragment, useEffect } from 'react'
 import { Dialog, Transition } from '@headlessui/react'
 import { ScaleLoader } from 'react-spinners'
 
+import { quantum, helix } from 'ldrs'
+
 
 const LoadingModal = () => {
+    helix.register()
     return ( 
         <Transition.Root show as={Fragment}>
 
@@ -46,9 +49,13 @@ const LoadingModal = () => {
                     text-center
                     '>
                        <Dialog.Panel>
-
+                        <l-quantum
+                            size="40"
+                            speed="3.5" 
+                            color="rgb(99, 70, 99)" 
+                        />
                             {/* <HashLoader color="#93c5fd" /> */}
-                            <ScaleLoader color="#93c5fd" radius={7} speedMultiplier={2}/>
+                            {/* <ScaleLoader color="#93c5fd" radius={7} speedMultiplier={2}/> */}
                             
                         </Dialog.Panel> 
                     </div>

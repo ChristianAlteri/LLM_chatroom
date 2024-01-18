@@ -3,15 +3,16 @@
 import React, { Fragment, useEffect, useRef, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { CgCloseR } from "react-icons/cg";
-import Calendar from "../Calendar";
+import Calendar from "../widgets/Calendar";
 import { Conversation, EventDetails, User } from "@prisma/client";
 import toast from "react-hot-toast";
 import getEventDetails from "@/app/actions/getEventDetails";
 
 import { parseISO } from "date-fns";
 import axios from "axios";
-import DateSideBar from "../DateSideBar";
-import Reminders from "../Reminders";
+import DateSideBar from "../widgets/DateSideBar";
+import Reminders from "../widgets/Reminders";
+import SplitWise from "../widgets/SplitWise";
 
 interface CalendarModalProps {
   label: string;
@@ -40,6 +41,8 @@ const CalendarModal: React.FC<CalendarModalProps> = ({
   let [dateMap, setDateMap] = useState(new Map());
   const [showReminders, setShowReminders] = useState(false);
   const [showDateSideBar, setShowDateSideBar] = useState(false);
+  const [showCalendar, setShowCalendar] = useState(false);
+  const [showSplitWise, setSplitWise] = useState(false);
   //   let [chosenDate, setChosenDate] = useState<Date | null>(null);
 
   //   console.log("conversation", conversation);
@@ -252,8 +255,8 @@ const CalendarModal: React.FC<CalendarModalProps> = ({
                       </button>
                     </div>
                       <div className="flex flex-row gap-10 m-10" >
-                        <div className="hover:underline hover:cursor-pointer" >TOGGLE REMINDERS</div>
-                        <div className="hover:underline hover:cursor-pointer" >TOGGLE SPLIT WISE</div>
+
+
                       </div>
                     <div
                       className="
@@ -265,8 +268,8 @@ const CalendarModal: React.FC<CalendarModalProps> = ({
                             p-5
                          "
                     >
-                      {/* Container for widgets */}
-                      <div className="flex flex-col"> 
+                      {/* Container for Left widgets */}
+                      <div className="flex flex-col gap-3"> 
                         {/* Voted dates */}
                       <h3
                         className="flex flex-col hover:underline cursor-pointer"
@@ -293,17 +296,25 @@ const CalendarModal: React.FC<CalendarModalProps> = ({
                       </h3>
                       {showReminders && <Reminders admin={admin}/>}
                     </div>
-                        
-                      {/* Container for calander */}
-                      <div
-                        className="
-                        flex
-                        flex-col
-                        border
-                        "
-                      >
-                        <div className="hover:underline hover:cursor-pointer"> TOGGLE CALENDAR </div> 
-                        {/* Calendar */}
+
+                    {/* Container for calendar */}
+                    <div
+                      className="
+                      flex
+                      flex-col
+                      h-1/2
+                      gap-3
+                      "
+                    >
+                      {/* Calendar */}
+                      <h3
+                        className="flex flex-col justify-center hover:underline cursor-pointer"
+                        onClick={() => setShowCalendar(!showCalendar)}
+                        >
+                        Calendar
+                      </h3> 
+                      {showCalendar && (
+                        <>
                         <Calendar
                           updateSelectedDay={updateSelectedDay}
                           eventDetails={eventDetails}
@@ -348,6 +359,18 @@ const CalendarModal: React.FC<CalendarModalProps> = ({
                             </button>
                           </div>
                         )}
+                        </>
+                      )}
+                      {/* SplitWise */}
+                      <h3
+                        className="flex flex-col justify-center hover:underline cursor-pointer"
+                        onClick={() => setSplitWise(!showSplitWise)}
+                        >
+                        SplitWise
+                      </h3> 
+                      {showSplitWise && (
+                        <SplitWise />
+                      )}
                       </div>
                     </div>
                   </div>

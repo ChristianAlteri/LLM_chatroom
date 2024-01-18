@@ -19,8 +19,8 @@ import {
   PiArrowCircleLeftLight,
   PiArrowCircleRightLight,
 } from "react-icons/pi";
-import getPotentialDatesByEventId from "../actions/getPotentialDatesByEventId";
-import getCurrentUser from "../actions/getCurrentUser";
+import getPotentialDatesByEventId from "../../actions/getPotentialDatesByEventId";
+import getCurrentUser from "../../actions/getCurrentUser";
 
 let colStartClasses = [
   "",

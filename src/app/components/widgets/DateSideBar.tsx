@@ -119,7 +119,7 @@ const DateSideBar: React.FC<DateSideBarProps> = ({
                     ${
                         active ? "bg-sky-200 text-white border border-slate-900" : ""}`
                   }
-                  onClick={(event) => {
+                  onClick={(event: any) => {
                     const parsedDate = parseISO(date);
                     updateDateSideBarSelection(parsedDate);
                   }}

@@ -11,6 +11,9 @@ import { CgCloseR } from "react-icons/cg";
 import { IoIosClose } from "react-icons/io";
 import { WiCloudRefresh } from "react-icons/wi";
 import { VscSend } from "react-icons/vsc";
+import Loading from "@/app/conversations/loading";
+import LoadingModal from "@/app/components/modals/LoadingModal";
+import LoadingSummary from "@/app/components/modals/LoadingSummary";
 
 interface SummaryProps {
   data: Conversation;
@@ -29,6 +32,7 @@ const Summary: React.FC<SummaryProps> = ({
   const [generatedSummary, setGeneratedSummary] = useState<string[]>([]);
   const [generatedSummaries, setGeneratedSummaries] = useState<string[]>([]);
   const [queryValue, setQueryValue] = useState<string>("");
+  const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
     console.log("unseenMessages in useEffect", unseenMessages);
@@ -49,6 +53,7 @@ const Summary: React.FC<SummaryProps> = ({
   useEffect(() => {
     if (messagesToCatchUpOn.length) {
       const fetchDataFromOpenAI = async () => {
+        setLoading(true);
         console.log("messagesToCatchUpOn in API call", messagesToCatchUpOn);
         try {
           const response = await axios.post(
@@ -82,7 +87,7 @@ const Summary: React.FC<SummaryProps> = ({
             ...prevSummaries,
             generatedSummary,
           ]);
-
+          setLoading(false);
           // console.log("Generated text from OpenAI:", generatedSummary);
         } catch (error) {
           console.error("Error fetching data from OpenAI:", error);
@@ -96,6 +101,7 @@ const Summary: React.FC<SummaryProps> = ({
   // Re fetches data from OpenAI
   const handleSummaryClick = useCallback(() => {
     const fetchDataFromOpenAI = async () => {
+        setLoading(true);
       console.log("messagesToCatchUpOn in API call", messagesToCatchUpOn);
       setGeneratedSummaries([]);
       try {
@@ -130,6 +136,7 @@ const Summary: React.FC<SummaryProps> = ({
           ...prevSummaries,
           generatedSummary,
         ]);
+        setLoading(false);
         // console.log("Generated text from OpenAI:", generatedSummary);
       } catch (error) {
         console.error("Error fetching data from OpenAI:", error);
@@ -142,6 +149,7 @@ const Summary: React.FC<SummaryProps> = ({
     const handleQueryTheAiSummary = useCallback(
         (question: string) => {
           const fetchDataFromOpenAI = async () => {
+            setLoading(true);
             const contextArray = unseenMessages.map(
               //@ts-ignore
               (message) => message.body
@@ -184,6 +192,7 @@ const Summary: React.FC<SummaryProps> = ({
                 ...prevSummaries,
                 generatedSummary,
               ]);
+              setLoading(false);
             } catch (error) {
               console.error("Error fetching data from OpenAI:", error);
             }
@@ -200,7 +209,10 @@ const Summary: React.FC<SummaryProps> = ({
     router.push(`/conversations/${data.id}`);
   }, [data.id, router]);
 
+  
+
   return (
+    <>
     <div className="flex flex-col h-full w-full justify-center ">
       <div className="flex-1 overflow-y-auto  bg-slate-100">
         <div className="flex gap-6 p-4 h-full w-full justify-center">
@@ -209,23 +221,27 @@ const Summary: React.FC<SummaryProps> = ({
               <button
                 onClick={handleClick}
                 className="flex absolute right-6 flex-col items-end rounded-md text-slate-500 hover:text-black"
-              >
+                >
                 <span className="sr-only">Close</span>
                 <IoIosClose className="h-6 w-6" aria-hidden="true" />
               </button>
               <div
                 onClick={handleSummaryClick}
                 className="text-xs font-semibold text-slate-500 hover:cursor-pointer hover:underline"
-              >
+                >
                 Summary
               </div>
               <div
                 style={{ fontSize: "10px" }}
                 className="text-xs text-slate-300"
-              >
+                >
                 {format(new Date(), "HH:mm a")}
               </div>
             </div>
+            {loading && 
+            <div>
+                <LoadingSummary />
+            </div>}
             <div className="text-sm w-fit overflow-hidden ">
               {generatedSummaries.map((summary, index) => (
                 <div key={index}>- {summary}</div>
@@ -270,6 +286,7 @@ const Summary: React.FC<SummaryProps> = ({
         </div>
       </div>
     </div>
+    </>
   );
 };
 
