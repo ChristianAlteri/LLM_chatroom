@@ -28,6 +28,7 @@ const Summary: React.FC<SummaryProps> = ({
   const [messagesToCatchUpOn, setMessagesToCatchUpOn] = useState<string[]>([]);
   const [generatedSummary, setGeneratedSummary] = useState<string[]>([]);
   const [generatedSummaries, setGeneratedSummaries] = useState<string[]>([]);
+  const [queryValue, setQueryValue] = useState<string>("");
 
   useEffect(() => {
     console.log("unseenMessages in useEffect", unseenMessages);
@@ -137,51 +138,62 @@ const Summary: React.FC<SummaryProps> = ({
     fetchDataFromOpenAI();
   }, [messagesToCatchUpOn, setGeneratedSummaries]);
 
-
-  const handleReQueryClick = useCallback((question: string) => {
-    const fetchDataFromOpenAI = async () => {
-        
-      console.log("question in re query", question);
-      setGeneratedSummaries([]);
-      try {
-        const response = await axios.post(
-          "https://api.openai.com/v1/chat/completions",
-          {
-            messages: [
-              {
-                role: "system",
-                content:
-                  "You are an intelligent assistant designed to efficiently process and output JSON summaries. Your primary function is to understand the context and interpret the question asked, generating clear and concise JSON-formatted responses that summarize relevant information.",
-              },
-              {
-                role: "user",
-                content: `Answer this question ${question} based on this context ${messagesToCatchUpOn}.`,
-              },
-            ],
-            model: "gpt-3.5-turbo-1106",
-            // response_format: { type: "json_object" },
-          },
-          {
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: `Bearer ${process.env.NEXT_PUBLIC_OPENAI_API_KEY}`,
-            },
-          }
-        );
-
-        const generatedSummary = response.data.choices[0].message.content;
-        console.log("Generated response from OpenAI:", response.data);
-        setGeneratedSummaries((prevSummaries) => [
-          ...prevSummaries,
-          generatedSummary,
-        ]);
-        // console.log("Generated text from OpenAI:", generatedSummary);
-      } catch (error) {
-        console.error("Error fetching data from OpenAI:", error);
-      }
-    };
-    fetchDataFromOpenAI();
-  }, [messagesToCatchUpOn, setGeneratedSummaries]);
+    // Re queries the ai based on context of chat
+    const handleQueryTheAiSummary = useCallback(
+        (question: string) => {
+          const fetchDataFromOpenAI = async () => {
+            const contextArray = unseenMessages.map(
+              //@ts-ignore
+              (message) => message.body
+            );
+            const context = contextArray.join("\n");
+            setGeneratedSummaries([]);
+      
+            console.log("question in re query: ", question, "context: ", context);
+            console.log("Calling OpenAI API...");
+      
+            try {
+              const response = await axios.post(
+                "https://api.openai.com/v1/chat/completions",
+                {
+                  messages: [
+                    {
+                      role: "system",
+                      content:
+                        "You are an intelligent assistant designed to efficiently process and output JSON summaries. Your primary function is to understand the context and interpret the question asked, generating clear and concise JSON-formatted responses that summarize relevant information.",
+                    },
+                    {
+                      role: "user",
+                      content: `Answer this question ${question} based on this context ${context}. Only answer the question asked. If a question is asked is not relevant to the context please respond with, "Sorry, i can only answer questions based on the context of the conversation."`,
+                    },
+                  ],
+                  model: "gpt-3.5-turbo-1106",
+                  // response_format: { type: "json_object" },
+                },
+                {
+                  headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${process.env.NEXT_PUBLIC_OPENAI_API_KEY}`,
+                  },
+                }
+              );
+      
+              const generatedSummary = response.data.choices[0].message.content;
+              console.log("Generated response from OpenAI:", response.data);
+              setGeneratedSummaries((prevSummaries) => [
+                ...prevSummaries,
+                generatedSummary,
+              ]);
+            } catch (error) {
+              console.error("Error fetching data from OpenAI:", error);
+            }
+          };
+      
+          // Call the fetchDataFromOpenAI function
+          fetchDataFromOpenAI();
+        },
+        [unseenMessages, setGeneratedSummaries]
+      );
 
   // Re routes back to the conversation
   const handleClick = useCallback(() => {
@@ -220,26 +232,38 @@ const Summary: React.FC<SummaryProps> = ({
               ))}
             </div>
             {generatedSummaries.length > 0 && (
-            <div className="flex flex-row justify-center">
-              <div className="flex flex-row justify-between absolute bottom-28 ">
-                <button className="flex" onClick={handleSummaryClick}>
-                  <WiCloudRefresh
-                    size={"42px"}
-                    className="h-6 text-slate-400 hover:cursor-pointer hover:text-slate-900"
-                  />
-                </button>
-                <form className="flex" onSubmit={handleReQueryClick(value)}>
-                  <input
-                    type="text"
-                    placeholder="Query the ai summary"
-                    value={"What date is it?"}
-                    onChange={() => "handleEventDescription"}
-                  />
-                  <button className=" text-slate-400 hover:cursor-pointer hover:text-slate-900" type="submit">
-                    <VscSend />
+              <div className="flex flex-row justify-center">
+                <div className="flex flex-row justify-between absolute bottom-28 ">
+                  <button className="flex" onClick={handleSummaryClick}>
+                    <WiCloudRefresh
+                      size={"42px"}
+                      className="h-6 text-slate-400 hover:cursor-pointer hover:text-slate-900"
+                    />
                   </button>
-                </form>
-              </div>
+                  <form
+                    className="flex"
+                    onSubmit={(event) => {
+                      event.preventDefault();
+                      handleQueryTheAiSummary(queryValue);
+                    }}
+                  >
+                    <input
+                      type="text"
+                      placeholder="Query the ai summary"
+                      value={queryValue}
+                      onChange={(event) => setQueryValue(event.target.value)}
+                    />
+                    <button
+                      className="
+                       text-slate-400 
+                         hover:cursor-pointer
+                         hover:text-slate-900"
+                      type="submit"
+                    >
+                      <VscSend />
+                    </button>
+                  </form>
+                </div>
               </div>
             )}
           </div>
