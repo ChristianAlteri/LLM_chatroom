@@ -5,11 +5,13 @@ import { Dialog, Transition } from "@headlessui/react";
 import { CgCloseR } from "react-icons/cg";
 import Calendar from "../Calendar";
 import { Conversation, EventDetails, User } from "@prisma/client";
+import toast from "react-hot-toast";
 import getEventDetails from "@/app/actions/getEventDetails";
 
 import { parseISO } from "date-fns";
 import axios from "axios";
 import DateSideBar from "../DateSideBar";
+import Reminders from "../Reminders";
 
 interface CalendarModalProps {
   label: string;
@@ -36,6 +38,8 @@ const CalendarModal: React.FC<CalendarModalProps> = ({
   let [admin, setAdmin] = useState(false);
   let [dateArray, setDateArray] = useState<Date[]>([]);
   let [dateMap, setDateMap] = useState(new Map());
+  const [showReminders, setShowReminders] = useState(false);
+  const [showDateSideBar, setShowDateSideBar] = useState(false);
   //   let [chosenDate, setChosenDate] = useState<Date | null>(null);
 
   //   console.log("conversation", conversation);
@@ -122,6 +126,7 @@ const CalendarModal: React.FC<CalendarModalProps> = ({
         eventDetailsId: eventDetails.id,
         date: parsedDate,
       });
+      toast.success("Potential date submitted!");
     } catch (error) {
       console.error("Error submitting event details:", error);
     }
@@ -224,7 +229,7 @@ const CalendarModal: React.FC<CalendarModalProps> = ({
                   {/* Components container */}
                   <div className="w-full h-full flex flex-col">
                     {/*  Buttons */}
-                    <div className="flex flex-row w-full gap-4 items-center p-1 justify-between text-slate-900">
+                    <div className="flex flex-row w-full gap-4 items-center p-4 justify-between text-slate-900">
                       <h1 className="font-bold ">Calendar</h1>
                       <div>Filter by attendee</div>
                       <div>Log your calendar in</div>
@@ -246,7 +251,7 @@ const CalendarModal: React.FC<CalendarModalProps> = ({
                         />
                       </button>
                     </div>
-                      <div className="flex flex-col gap-10 m-10" >
+                      <div className="flex flex-row gap-10 m-10" >
                         <div className="hover:underline hover:cursor-pointer" >TOGGLE REMINDERS</div>
                         <div className="hover:underline hover:cursor-pointer" >TOGGLE SPLIT WISE</div>
                       </div>
@@ -260,19 +265,42 @@ const CalendarModal: React.FC<CalendarModalProps> = ({
                             p-5
                          "
                     >
-                      <DateSideBar
-                        dateMap={dateMap}
-                        eventDetails={eventDetails}
-                        conversation={conversation}
-                        currentUser={currentUser}
-                        updateDateSideBarSelection={updateDateSideBarSelection}
-                      />
+                      {/* Container for widgets */}
+                      <div className="flex flex-col"> 
+                        {/* Voted dates */}
+                      <h3
+                        className="flex flex-col hover:underline cursor-pointer"
+                        onClick={() => setShowDateSideBar(!showDateSideBar)}
+                      >
+                        Voted dates
+                      </h3>
+                      {showDateSideBar && (
+                        <DateSideBar
+                          dateMap={dateMap}
+                          eventDetails={eventDetails}
+                          conversation={conversation}
+                          currentUser={currentUser}
+                          updateDateSideBarSelection={updateDateSideBarSelection}
+                        />
+                      )}
+
+                      {/* Reminders */}
+                      <h3
+                        className="flex flex-col hover:underline cursor-pointer"
+                        onClick={() => setShowReminders(!showReminders)}
+                      >
+                        Reminders
+                      </h3>
+                      {showReminders && <Reminders admin={admin}/>}
+                    </div>
+                        
                       {/* Container for calander */}
                       <div
                         className="
-                    flex
-                    flex-col
-                    "
+                        flex
+                        flex-col
+                        border
+                        "
                       >
                         <div className="hover:underline hover:cursor-pointer"> TOGGLE CALENDAR </div> 
                         {/* Calendar */}

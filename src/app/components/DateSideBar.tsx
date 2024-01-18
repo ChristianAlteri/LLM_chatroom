@@ -96,9 +96,9 @@ const DateSideBar: React.FC<DateSideBarProps> = ({
  */
 
   return (
-    <div className="border-r border-slate-600 overflow-y-auto">
-      <div className="px-4 py-16 overflow-y-auto">
-        <div className="mx-auto max-w-md overflow-y-auto">
+    <div className="border rounded-md border-slate-600 overflow-y-auto h-1/5">
+      <div className="px-4 py-16 ">
+        <div className="mx-auto max-w-md">
           <RadioGroup value={selected} onChange={setSelected}>
             <RadioGroup.Label className="sr-only">Server size</RadioGroup.Label>
             <div className="space-y-2">
@@ -115,7 +115,7 @@ const DateSideBar: React.FC<DateSideBarProps> = ({
                         ? "bg-emerald-200 text-white"
                         : "bg-white"
                     }
-                    relative border flex cursor-pointer rounded-lg px-5 py-4  hover:bg-blue-100 hover:border-slate-900 focus:outline-none
+                    relative  flex cursor-pointer rounded-lg px-2 py-2  hover:bg-blue-100 hover:border-slate-900 focus:outline-none
                     ${
                         active ? "bg-sky-200 text-white border border-slate-900" : ""}`
                   }
@@ -127,7 +127,7 @@ const DateSideBar: React.FC<DateSideBarProps> = ({
                   {({ checked }) => (
                     <div className="flex w-full items-center justify-center">
                       <div className="flex items-center  overflow-y-auto">
-                        <div className="text-sm">
+                        <div className="text-xs">
                           <RadioGroup.Label
                             as="p"
                             className={`font-medium ${

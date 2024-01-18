@@ -122,7 +122,7 @@ export default function Calendar({
 
   return (
     <div className="flex flex-col p-2">
-      <div className="flex items-center ">
+      <div className="flex items-center h-full">
         <div className="flex flex-row w-full justify-between">
           <h2 className="font-semibold text-slate-900">
             {format(firstDayCurrentMonth, "MMMM yyyy")}
