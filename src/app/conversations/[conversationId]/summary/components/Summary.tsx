@@ -7,6 +7,9 @@ import { useCallback, useEffect, useState } from "react";
 
 import axios from "axios";
 
+import { CgCloseR } from "react-icons/cg";
+import { IoIosClose } from "react-icons/io";
+
 interface SummaryProps {
   data: Conversation;
   currentUser: User;
@@ -19,11 +22,13 @@ const Summary: React.FC<SummaryProps> = ({
   unseenMessages,
 }) => {
   const router = useRouter();
+
   const [messagesToCatchUpOn, setMessagesToCatchUpOn] = useState<string[]>([]);
   const [generatedSummary, setGeneratedSummary] = useState<string[]>([]);
   const [generatedSummaries, setGeneratedSummaries] = useState<string[]>([]);
 
   useEffect(() => {
+    console.log("unseenMessages in useEffect", unseenMessages);
     const filteredMessages = unseenMessages.filter(
       //@ts-ignore
       (message) => !message.seenIds.includes(currentUser.id)
@@ -34,11 +39,15 @@ const Summary: React.FC<SummaryProps> = ({
     );
     const messageBodies = filteredMessageBodies.join("\n");
     setMessagesToCatchUpOn(messageBodies);
+    console.log("messagesToCatchUpOn in useEffect", messagesToCatchUpOn);
   }, [unseenMessages, currentUser.id, messagesToCatchUpOn]);
 
+//   Catch up summary call
   useEffect(() => {
-    const fetchDataFromOpenAI = async () => {
-      try {
+    if (messagesToCatchUpOn.length) {
+      const fetchDataFromOpenAI = async () => {
+          console.log("messagesToCatchUpOn in API call", messagesToCatchUpOn);
+          try {
         const response = await axios.post(
           "https://api.openai.com/v1/chat/completions",
           {
@@ -65,20 +74,22 @@ const Summary: React.FC<SummaryProps> = ({
         );
 
         const generatedSummary = response.data.choices[0].message.content;
+        console.log("Generated response from OpenAI:", response.data);
         setGeneratedSummaries((prevSummaries) => [
           ...prevSummaries,
           generatedSummary,
         ]);
 
-        console.log("messagesToCatchUpOn", messagesToCatchUpOn);
-        console.log("Generated text from OpenAI:", generatedSummary);
+        
+        // console.log("Generated text from OpenAI:", generatedSummary);
       } catch (error) {
         console.error("Error fetching data from OpenAI:", error);
       }
     };
 
     fetchDataFromOpenAI();
-  }, [currentUser]);
+}
+  }, [messagesToCatchUpOn]);
 
   // Re routes back to the conversation
   const handleClick = useCallback(() => {
@@ -91,6 +102,26 @@ const Summary: React.FC<SummaryProps> = ({
         <div className="flex gap-6 p-4 h-full w-full justify-center">
           <div className="flex bg-white p-4 border rounded-lg border-slate-900 flex-col gap-2">
             <div className="flex items-center gap-2">
+                {/* Close button */}
+                    <button
+                        onClick={handleClick}
+                        className="flex 
+                        absolute
+                        right-6
+                        flex-col 
+                        items-end
+                        rounded-md 
+                        text-slate-500 
+                        hover:text-black
+                        
+                        "
+                    >
+                        <span className="sr-only">Close</span>
+                                    <IoIosClose 
+                                    className="h-6 w-6"
+                                    aria-hidden="true"
+                                    />
+                    </button>
               <div className="text-xs font-semibold text-slate-500">
                 Summary
               </div>
@@ -98,7 +129,7 @@ const Summary: React.FC<SummaryProps> = ({
                 style={{ fontSize: "10px" }}
                 className="text-xs text-slate-300"
               >
-                {format(new Date(data.createdAt), "HH:mm")}
+                {format(new Date(), "HH:mm a")}
               </div>
             </div>
             <div className="text-sm w-fit overflow-hidden ">
@@ -107,12 +138,6 @@ const Summary: React.FC<SummaryProps> = ({
               ))}
             </div>
           </div>
-          <button
-            onClick={handleClick}
-            className="flex absolute right-5 flex-col "
-          >
-            X
-          </button>
         </div>
       </div>
     </div>

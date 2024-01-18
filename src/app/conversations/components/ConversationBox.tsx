@@ -165,9 +165,11 @@ const ConversationBox: React.FC<ConversationBoxProps> = ({
                 className="
                 text-xs 
                 p-1
-                text-slate-300 
-                hover:text-black 
-                hover:underline"
+                text-slate-400 
+                hover:text-slate-900 
+                hover:underline
+                hover:cursor-pointer
+                "
                 onClick={handleClickCatchUp}
                 >
                   Catch up

@@ -16,100 +16,101 @@ import { pusherClient } from "@/app/libs/pusher";
 import { find } from "lodash";
 
 
+
 interface ConversationListProps {
-    initialItems: FullConversationType[];
-    users: User[];
+  initialItems: FullConversationType[];
+  users: User[];
 }
 
 const ConversationsList: React.FC<ConversationListProps> = ({
-    initialItems,
-    users
+  initialItems,
+  users,
 }) => {
-    const session = useSession();
-    const [items, setItems] = useState(initialItems);
-    // console.log("conversations", items);
-    const [isModalOpen, setIsModalOpen] = useState(false);
-    
-    const router = useRouter();
+  const session = useSession();
+  const [items, setItems] = useState(initialItems);
+  // console.log("conversations", items);
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
-    const { conversationId, isOpen } = useConversation();
+  const router = useRouter();
 
+  const { conversationId, isOpen } = useConversation();
 
-    // memoize the pusher key so we don't have to find it every time
-    const pusherKey = useMemo(() => {
-        return session?.data?.user?.email
-    }, [session?.data?.user?.email])
+  // memoize the pusher key so we don't have to find it every time
+  const pusherKey = useMemo(() => {
+    return session?.data?.user?.email;
+  }, [session?.data?.user?.email]);
 
-
-    /* setting up the various pusher services
+  /* setting up the various pusher services
         1. subscribe to the pusher channel which in this case is the email of the user
         2. set up the event handlers. These are the functions that will be called when the event is triggered
         3. bind the event handlers to the pusher client. essentially your listening to changes on this channel
         4. return a function that will be called when the component is unmounted. This will unsubscribe from the pusher channel and unbind the event handlers
     */
-    useEffect(() => {
-        if(!pusherKey) {
-            return
+  useEffect(() => {
+    if (!pusherKey) {
+      return;
+    }
+
+    pusherClient.subscribe(pusherKey);
+
+    const newHandler = (conversation: FullConversationType) => {
+      setItems((current) => {
+        if (find(current, { id: conversation.id })) {
+          return current;
         }
 
-        pusherClient.subscribe(pusherKey)
+        return [conversation, ...current];
+      });
+    };
 
-        const newHandler = (conversation: FullConversationType) => {
-            setItems((current) => {
-                if(find(current, { id: conversation.id })) {
-                    return current
-                }
+    const updateHandler = (conversation: FullConversationType) => {
+      setItems((current) =>
+        current.map((currentConversation) => {
+          if (currentConversation.id === conversation.id) {
+            return {
+              ...currentConversation,
+              messages: conversation.messages,
+            };
+          }
+          return currentConversation;
+        })
+      );
+    };
 
-                return [conversation, ...current]
-            })
-        }
+    const removeHandler = (conversation: FullConversationType) => {
+      setItems((current) => {
+        return [...current.filter((convo) => convo.id !== conversation.id)];
+      });
 
-        const updateHandler = (conversation: FullConversationType) => {
-            setItems((current) => current.map((currentConversation) => {
-                if (currentConversation.id === conversation.id) {
-                    return {
-                        ...currentConversation,
-                        messages: conversation.messages
-                    }
-                }
-                return currentConversation
-            }))
-        }
+      // console.log('Delete workingggggg');
 
-        const removeHandler = (conversation: FullConversationType) => {
-                setItems((current) => {
-                return [...current.filter((convo) => convo.id !== conversation.id)]
-            })
+      if (conversationId === conversation.id) {
+        router.push("/conversations");
+      }
+    };
 
-            // console.log('Delete workingggggg');
+    pusherClient.bind("conversation:new", newHandler);
+    pusherClient.bind("conversation:update", updateHandler);
+    pusherClient.bind("conversation:remove", removeHandler);
 
-            if (conversationId === conversation.id) {
-                router.push('/conversations')
-            }
-        }
+    return () => {
+      pusherClient.unsubscribe(pusherKey);
+      pusherClient.unbind("conversation:new", newHandler);
+      pusherClient.unbind("conversation:update", updateHandler);
+      pusherClient.unbind("conversation:remove", removeHandler);
+    };
+  }, [pusherKey, conversationId, router]);
 
-        pusherClient.bind('conversation:new', newHandler)
-        pusherClient.bind('conversation:update', updateHandler)
-        pusherClient.bind('conversation:remove', removeHandler)
-
-        return () => {
-            pusherClient.unsubscribe(pusherKey)
-            pusherClient.unbind('conversation:new', newHandler)
-            pusherClient.unbind('conversation:update', updateHandler)
-            pusherClient.unbind('conversation:remove', removeHandler)
-        }
-
-    }, [pusherKey, conversationId, router])
-
-    return ( 
-        <>
-        <GroupChatModal 
-            users={users}
-            isOpen={isModalOpen}
-            onClose={() => setIsModalOpen(false)}
-        />
-            <aside
-            className={clsx(`
+  return (
+    <>
+      <GroupChatModal
+        users={users}
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+      />
+      <aside
+        className={clsx(
+          `
             fixed
             inset-y-0
             pb-20
@@ -126,21 +127,43 @@ const ConversationsList: React.FC<ConversationListProps> = ({
             w-full
             left-0
             `,
-                isOpen ? 'hidden' : 'block w-full left-0'
-            )}
-            >
-                <div className="px-5" >
-                    <div className="flex flex-row justify-between items-center mb-4 pt-4 ">
-                        <div className="
+          isOpen ? "hidden" : "block w-full left-0"
+        )}
+      >
+        <div className="px-5">
+          <div className="flex flex-row justify-between items-center mb-4 pt-4 ">
+            <div
+              className="
                         text-2xl
                         font-bold
                         text-slate-800
                         py-5
-                        ">
-                            Groups 
-                        </div>
-                            <div onClick={() => setIsModalOpen(true)}
-                                className="
+                        "
+            >
+              Groups
+            </div>
+            {/* Sort by selector */}
+            <div className="flex text-left">
+              <select
+                className=" 
+              border
+               border-slate-500 
+            text-xs
+            p-1
+              rounded 
+              leading-tight 
+              focus:outline-none
+               focus:border-slate-900"
+              >
+                <option>Chat Created</option>
+                <option>Event Date</option>
+                <option>Unread</option>
+              </select>
+
+            </div>
+            <div
+              onClick={() => setIsModalOpen(true)}
+              className="
                                 rounded-lg
                                 p-2
                                 bg-blue-50
@@ -150,23 +173,22 @@ const ConversationsList: React.FC<ConversationListProps> = ({
                                 hover:border
                                 hover:border-slate-500
                                 transition
-                                ">
-                                    <MdGroupAdd size={20} />
-                            </div>
-                    </div>
-                    {items.map((item) => (
-                        <ConversationBox
-                        key={item.id}
-                        data={item}
-                        selected={conversationId === item.id}
-                        />
-                    ))}
-                </div>
+                                "
+            >
+              <MdGroupAdd size={20} />
+            </div>
+          </div>
+          {items.map((item) => (
+            <ConversationBox
+              key={item.id}
+              data={item}
+              selected={conversationId === item.id}
+            />
+          ))}
+        </div>
+      </aside>
+    </>
+  );
+};
 
-
-            </aside>
-        </>
-     );
-}
- 
 export default ConversationsList;
