@@ -7,6 +7,11 @@ const getEventDetails = async (conversationId: any) => {
         conversationId: conversationId
       },
       include: {
+        reminders: {
+          include: {
+            user: true,
+          }
+        },
         potentialDates: {
           include: {
             user: true,

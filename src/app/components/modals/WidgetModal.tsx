@@ -13,6 +13,7 @@ import axios from "axios";
 import DateSideBar from "../widgets/DateSideBar";
 import Reminders from "../widgets/Reminders";
 import SplitWise from "../widgets/SplitWise";
+import Location from "../widgets/Location";
 
 interface WidgetModalProps {
   label: string;
@@ -42,7 +43,8 @@ const WidgetModal: React.FC<WidgetModalProps> = ({
   const [showReminders, setShowReminders] = useState(false);
   const [showDateSideBar, setShowDateSideBar] = useState(false);
   const [showCalendar, setShowCalendar] = useState(false);
-  const [showSplitWise, setSplitWise] = useState(false);
+  const [showSplitWise, setShowSplitWise] = useState(false);
+  const [showLocation, setShowLocation] = useState(false);
   //   let [chosenDate, setChosenDate] = useState<Date | null>(null);
 
   //   console.log("conversation", conversation);
@@ -296,7 +298,18 @@ const WidgetModal: React.FC<WidgetModalProps> = ({
                       {showReminders && <Reminders 
                         admin={admin} 
                         eventDetails={eventDetails} 
-                        conversation={conversation}/>}
+                        conversation={conversation}
+                        currentUser={currentUser}
+                        />}
+                      {/* Reminders */}
+                      <h3
+                        className="flex flex-col hover:underline cursor-pointer"
+                        onClick={() => setShowLocation(!showLocation)}
+                      >
+                        Location
+                      </h3>
+                      {showLocation && <Location/>}
+
                     </div>
 
                     {/* Container for calendar */}
@@ -366,7 +379,7 @@ const WidgetModal: React.FC<WidgetModalProps> = ({
                       {/* SplitWise */}
                       <h3
                         className="flex flex-col justify-center hover:underline cursor-pointer"
-                        onClick={() => setSplitWise(!showSplitWise)}
+                        onClick={() => setShowSplitWise(!showSplitWise)}
                         >
                         SplitWise
                       </h3> 
