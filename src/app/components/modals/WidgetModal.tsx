@@ -293,7 +293,10 @@ const WidgetModal: React.FC<WidgetModalProps> = ({
                       >
                         Reminders
                       </h3>
-                      {showReminders && <Reminders admin={admin}/>}
+                      {showReminders && <Reminders 
+                        admin={admin} 
+                        eventDetails={eventDetails} 
+                        conversation={conversation}/>}
                     </div>
 
                     {/* Container for calendar */}

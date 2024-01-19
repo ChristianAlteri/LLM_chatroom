@@ -159,7 +159,6 @@ const ConversationsList: React.FC<ConversationListProps> = ({
                 <option>Event Date</option>
                 <option>Unread</option>
               </select>
-
             </div>
             <div
               onClick={() => setIsModalOpen(true)}

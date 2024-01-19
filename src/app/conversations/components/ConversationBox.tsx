@@ -125,7 +125,7 @@ const ConversationBox: React.FC<ConversationBoxProps> = ({
                 m-1
                 text-sm
                 font-medium
-                text-slate-700
+                text-purple2-900
                 hover:text-black
                 "
             >
@@ -152,7 +152,7 @@ const ConversationBox: React.FC<ConversationBoxProps> = ({
             p-1
             rounded-md
           `,
-          hasSeen ? "text-slate-300" : "text-black font-bold"
+          hasSeen ? "text-purple2-600" : "text-slate-900 font-bold"
           )}
           >
                 {lastMessageText}
@@ -166,7 +166,7 @@ const ConversationBox: React.FC<ConversationBoxProps> = ({
                 text-xs 
                 p-1
                 text-slate-400 
-                hover:text-slate-900 
+                hover:text-purple2-500 
                 hover:underline
                 hover:cursor-pointer
                 "

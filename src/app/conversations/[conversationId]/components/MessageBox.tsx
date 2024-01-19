@@ -28,7 +28,7 @@ const MessageBox: React.FC<MessageBoxProps> = ({ data, isLast }) => {
   const body = clsx("flex flex-col gap-2 ", isOwn && "items-end");
   const message = clsx(
     "text-sm w-fit overflow-hidden ",
-    isOwn ? "rounded-xl font-bold bg-blue-400 text-white" : "rounded-xl font-bold bg-slate-500 text-white",
+    isOwn ? "rounded-xl font-bold bg-purple2-300 text-white" : "rounded-xl font-bold bg-slate-500 text-white",
     data.image ? "rounded-md p-0" : "rounded-full py-2 px-3"
   );
 
@@ -39,7 +39,7 @@ const MessageBox: React.FC<MessageBoxProps> = ({ data, isLast }) => {
       </div>
       <div className={body}>
         <div className="flex items-center gap-2">
-          <div className="text-xs font-semibold text-slate-500">
+          <div className="text-xs font-semibold text-purple2-300">
             {data.sender.name}
           </div>
           <div style={{ fontSize: '10px'}} className="text-xs text-slate-300">
