@@ -48,9 +48,9 @@ const Checkbox: React.FC<CheckboxProps> = ({
 
   return (
     <>
-      <div className="hover:border hover:border-slate-900 rounded-md hover:bg-blue-50">
-        <label className="flex flex-col  p-1.5  cursor-pointer gap-1 text-slate-900">
-          <div className="flex flex-row justify-between p-0.5 ">
+      <div className="border-slate-100 w-full border-b-2 hover:border hover:border-slate-900 rounded-md hover:bg-blue-50">
+        <label className="flex flex-col p-1 cursor-pointer gap-1 text-slate-900">
+          <div className="flex flex-row justify-between p-0.5  ">
             <input
               type="checkbox"
               checked={isChecked}
@@ -69,8 +69,8 @@ const Checkbox: React.FC<CheckboxProps> = ({
           <div className="text-slate-900 font-bold">
             {reminder}
           </div>
-            <div className="text-slate-400 -m-0.5 p-2">
-              - {note}
+            <div className="text-slate-400 text-xs -m-0.5 p-1">
+               {note}
             </div>
             </div>
           </div>

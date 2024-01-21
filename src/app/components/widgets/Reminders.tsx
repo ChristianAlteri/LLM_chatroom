@@ -117,9 +117,9 @@ const Reminders: React.FC<RemindersProps> = ({
           value={displayOption}
           onChange={(e) => setDisplayOption(e.target.value)}
         >
+          {/* TODO: make sure your sorting by deadline */}
           <option value="All">All</option>
           <option value="My reminders">My reminders</option>
-          <option value="Date">Date</option>
         </select>
       </div>
       <div className="p-2 w-full mx-auto">

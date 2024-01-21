@@ -96,12 +96,12 @@ const DateSideBar: React.FC<DateSideBarProps> = ({
  */
 
   return (
-    <div className="border rounded-md border-slate-600 overflow-y-auto h-1/4">
+    <div className="border  rounded-md border-slate-600 overflow-y-auto h-1/4">
       <div className="px-4 py-16 ">
         <div className="mx-auto max-w-md">
           <RadioGroup value={selected} onChange={setSelected}>
             <RadioGroup.Label className="sr-only">Server size</RadioGroup.Label>
-            <div className="space-y-2">
+            <div className="flex flex-col gap-3 rounded-md">
               {/* {Array.from(dateMap.entries()).map(([date, votes]) => ( */}
               {sortedDates.map(([date, votes]) => (
                 <RadioGroup.Option
@@ -115,7 +115,7 @@ const DateSideBar: React.FC<DateSideBarProps> = ({
                         ? "bg-emerald-200 text-white"
                         : "bg-white"
                     }
-                    relative  flex cursor-pointer rounded-lg px-2 py-2  hover:bg-blue-100 hover:border-slate-900 focus:outline-none
+                    border-b-2 flex cursor-pointer p-1 hover:bg-blue-100 rounded hover:border hover:border-slate-900
                     ${
                         active ? "bg-sky-200 text-white border border-slate-900" : ""}`
                   }
@@ -125,8 +125,8 @@ const DateSideBar: React.FC<DateSideBarProps> = ({
                   }}
                 >
                   {({ checked }) => (
-                    <div className="flex w-full items-center justify-center">
-                      <div className="flex items-center  overflow-y-auto">
+                    <div className="flex w-full items-center justify-center p-2 ">
+                      <div className="flex items-cente overflow-y-auto">
                         <div className="text-xs">
                           <RadioGroup.Label
                             as="p"
