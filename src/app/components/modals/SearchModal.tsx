@@ -48,7 +48,7 @@ const SearchModal: React.FC<SearchModalProps> = ({
     }
   }, []);
 
-  console.log("Filtered Users:", filteredUsers);
+  // console.log("Filtered Users:", filteredUsers);
 
   return (
     <div className="modal-overlay">
@@ -152,20 +152,13 @@ const SearchModal: React.FC<SearchModalProps> = ({
                 {searchQuery && (
                     <div className="bg-white rounded-md">
                     {filteredUsers.map((item) => (
-                        <div className="p-1.5 mt-5 h-full top-0" key={item.id}>
-                        <UserBox
-                        data={item}
-                        />
-                        {/* <div className="flex flex-row w-full justify-center text-slate-900">
-                        <ul className="flex flex-row justify-between  w-full mt-2 ">
-                            <li className=" relative flex cursor-pointer hover:underline hover:text-slate-900">
-                            <p className="font-semibold">{item.name}</p> - 
-                            <p className=""> {item.email}</p> 
-                            </li>
-                            <p className="flex justify-end">Add</p>
-                        </ul>
-                        </div> */}
-                    </div>
+                        <div className="p-1.5 mt- h-full top-0" key={item.id}>
+                          <UserBox
+                          data={item}
+                          addFriend={true}
+                          showEmail={true}
+                          />
+                        </div>
                     ))}
                     </div>
                 )}

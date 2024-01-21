@@ -3,14 +3,27 @@
 import { User } from "@prisma/client";
 import UserBox from "./UserBox";
 import SearchBar from "@/app/components/inputs/SearchBar";
+import { use, useEffect, useState } from "react";
 
 interface UserListProps {
     items: User[];
+    allFriends: User[];
+    
 };
 
 const UserList: React.FC<UserListProps> = ({
     items,
+    allFriends,
 }) => {
+
+    // const [friends, setFriends] = useState<User[]>([]);
+
+    // useEffect(() => {
+    //     // filteresFriends = items.filter((item))
+    //     setFriends(items);
+    //     console.log('Friends', friends);
+    // },[friends]);
+
     return ( 
         <aside
         className="
@@ -38,7 +51,7 @@ const UserList: React.FC<UserListProps> = ({
                     text-slate-800
                     py-5
                     ">
-                        Contacts
+                        Friends
                         <SearchBar
                         label="Search contacts by email"
                         id="search"
@@ -47,8 +60,13 @@ const UserList: React.FC<UserListProps> = ({
                         </SearchBar> 
                     </div>
                 </div>
-                {items.map((item) => (
+
+                {/* {items.map((item) => (
                     <UserBox key={item.id} data={item} 
+                    />
+                ))} */}
+                {allFriends.map((friend) => (
+                    <UserBox key={friend.id} data={friend} 
                     />
                 ))}
             </div>

@@ -8,16 +8,24 @@ import { useCallback, useState } from "react";
 
 import Avatar from "@/app/components/Avatar";
 import LoadingModal from "@/app/components/modals/LoadingModal";
+import Button from "@/app/components/Buttons/Button";
+import AddFriendButton from "@/app/components/Buttons/AddFriendButton";
 
 interface UserBoxProps {
   data: User
+  addFriend?: boolean
+  showEmail?: boolean
 }
 
 const UserBox: React.FC<UserBoxProps> = ({ 
-  data
+  data,
+  addFriend,
+  showEmail,
 }) => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
+
+  
 
   const handleClick = useCallback(() => {
     setIsLoading(true);
@@ -38,9 +46,8 @@ const UserBox: React.FC<UserBoxProps> = ({
         onClick={handleClick}
         className="
         w-full
-        relative
         flex
-        items-center
+        flex-row
         space-x-3
         bg-slate-50
         p-3
@@ -59,10 +66,10 @@ const UserBox: React.FC<UserBoxProps> = ({
                       <div
                       className="
                           flex
+                          flex-row
                           justify-between
                           items-center
                           mb-1
-                          
                       "
                       >
                           <p 
@@ -77,7 +84,20 @@ const UserBox: React.FC<UserBoxProps> = ({
                           >
                               {data.name}
                           </p>
+                      {/* If add friend is true */}
+                      <div className="flex flex-col">
+                        {addFriend && (
+                          <div className="flex">
+                            <AddFriendButton data={data} />
+                          </div>
+                        )}
                       </div>
+                      </div>
+                        {/* If show email is true */}
+                        {showEmail && (
+                        <ul className="flex flex-row m-1 justify-between text-xs text-slate-300  ">
+                              <p className=""> {data.email}</p> 
+                        </ul>)}
                   </div>
               </div>
       </div>

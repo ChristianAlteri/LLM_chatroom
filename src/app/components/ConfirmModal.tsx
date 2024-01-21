@@ -11,7 +11,7 @@ import Modal from "./modals/Modal";
 import { FiAlertTriangle } from 'react-icons/fi'
 import { Dialog } from "@headlessui/react";
 
-import Button from "@/app/components/Button"
+import Button from "@/app/components/Buttons/Button"
 
 
 interface ConfirmModalProps {

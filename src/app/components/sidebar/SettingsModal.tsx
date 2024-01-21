@@ -10,7 +10,7 @@ import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import Modal from "../modals/Modal";
 import Input from "../inputs/Input";
 import Image from "next/image";
-import Button from "../Button";
+import Button from "../Buttons/Button";
 
 interface SettingsModalProps {
   isOpen?: boolean;

@@ -10,7 +10,7 @@ import toast from "react-hot-toast";
 import Modal from "@/app/components/modals/Modal";
 import Input from "@/app/components/inputs/Input";
 import Select from "@/app/components/inputs/Select";
-import Button from "@/app/components/Button";
+import Button from "@/app/components/Buttons/Button";
 
 interface GroupChatModalProps {
     isOpen?: boolean;

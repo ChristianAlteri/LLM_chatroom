@@ -155,9 +155,10 @@ const ConversationsList: React.FC<ConversationListProps> = ({
               focus:outline-none
                focus:border-slate-900"
               >
-                <option>Chat Created</option>
+                <option>Latest Messages</option>
+                <option>Created At</option>
                 <option>Event Date</option>
-                <option>Unread</option>
+                <option>Unread Messages</option>
               </select>
             </div>
             <div

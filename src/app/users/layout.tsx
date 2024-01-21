@@ -1,3 +1,4 @@
+import getFriends from "../actions/getFriends";
 import getUsers from "../actions/getUsers";
 import Sidebar from "../components/sidebar/Sidebar";
 import UserList from "./Components/UserList";
@@ -9,6 +10,7 @@ export default async function UsersLayout({
 }) {
     // essentially the same as if you where to write the prisma get request here
     const users = await getUsers()
+    const allFriends = await getFriends()
 
     // console.log(users);
     return (
@@ -16,7 +18,7 @@ export default async function UsersLayout({
         <Sidebar >  
             <div className="h-full bg-white">
             
-                <UserList items={users}/>
+                <UserList items={users} allFriends={allFriends}/>
                 {children}
             
             </div>
