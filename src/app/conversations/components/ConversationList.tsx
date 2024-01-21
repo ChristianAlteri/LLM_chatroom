@@ -20,11 +20,13 @@ import { find } from "lodash";
 interface ConversationListProps {
   initialItems: FullConversationType[];
   users: User[];
+  allFriends: User[];
 }
 
 const ConversationsList: React.FC<ConversationListProps> = ({
   initialItems,
   users,
+  allFriends,
 }) => {
   const session = useSession();
   const [items, setItems] = useState(initialItems);
@@ -105,6 +107,7 @@ const ConversationsList: React.FC<ConversationListProps> = ({
     <>
       <GroupChatModal
         users={users}
+        allFriends={allFriends}
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}
       />
@@ -178,6 +181,7 @@ const ConversationsList: React.FC<ConversationListProps> = ({
               <MdGroupAdd size={20} />
             </div>
           </div>
+
           {items.map((item) => (
             <ConversationBox
               key={item.id}

@@ -16,13 +16,15 @@ interface GroupChatModalProps {
     isOpen?: boolean;
     onClose: () => void;
     users: User[];
+    allFriends: User[];
 }
 
 
 const GroupChatModal: React.FC<GroupChatModalProps> = ({
     isOpen,
     onClose,
-    users = []
+    users = [],
+    allFriends = []
 }) => {
     const router = useRouter();
     const [isLoading, setIsLoading] = useState(false);
@@ -99,12 +101,24 @@ const GroupChatModal: React.FC<GroupChatModalProps> = ({
                             required
                             errors={errors}
                             />
-                            <Select 
+                            {/* <Select 
                                 disabled={isLoading}
                                 label='Members'
                                 options={users.map((user) => ({
                                     value: user.id,
                                     label: user.name
+                                }))}
+                                onChange={(value) => setValue('members', value, {
+                                    shouldValidate: true
+                                })}
+                                value={members}
+                            /> */}
+                            <Select 
+                                disabled={isLoading}
+                                label='Members'
+                                options={allFriends.map((friend) => ({
+                                    value: friend.id,
+                                    label: friend.name
                                 }))}
                                 onChange={(value) => setValue('members', value, {
                                     shouldValidate: true

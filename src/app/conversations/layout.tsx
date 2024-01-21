@@ -1,4 +1,5 @@
 import getConversations from "../actions/getConversations"
+import getFriends from "../actions/getFriends";
 import getUsers from "../actions/getUsers";
 
 import Sidebar from "../components/sidebar/Sidebar"
@@ -13,6 +14,7 @@ export default async function ConversationsLayout({
     const conversations = await getConversations();
     // console.log('conversations', conversations);
     const users = await getUsers();
+    const allFriends = await getFriends()
     return (
         // @ts-ignore
         <Sidebar> 
@@ -21,6 +23,7 @@ export default async function ConversationsLayout({
             >
                 <ConversationsList 
                     users={users}
+                    allFriends={allFriends}
                     initialItems={conversations}
                 />
                 {children}
