@@ -8,6 +8,8 @@ import { Conversation, EventDetails, User } from "@prisma/client";
 import toast from "react-hot-toast";
 import getEventDetails from "@/app/actions/getEventDetails";
 
+import { MdOutlineWidgets } from "react-icons/md";
+
 import { parseISO } from "date-fns";
 import axios from "axios";
 import DateSideBar from "../widgets/DateSideBar";
@@ -45,6 +47,7 @@ const WidgetModal: React.FC<WidgetModalProps> = ({
   const [showCalendar, setShowCalendar] = useState(false);
   const [showSplitWise, setShowSplitWise] = useState(false);
   const [showLocation, setShowLocation] = useState(false);
+  const [showPoll, setShowPoll] = useState(false);
   //   let [chosenDate, setChosenDate] = useState<Date | null>(null);
 
   //   console.log("conversation", conversation);
@@ -137,7 +140,6 @@ const WidgetModal: React.FC<WidgetModalProps> = ({
     }
   };
 
-
   //   Handles submission of Choose Date in the Event Details DB
   const chooseDate: React.MouseEventHandler<HTMLButtonElement> = (event) => {
     event.preventDefault();
@@ -164,8 +166,7 @@ const WidgetModal: React.FC<WidgetModalProps> = ({
     } catch (error) {
       console.error("Error submitting event details:", error);
     }
-  }; 
-    
+  };
 
   //   useEffect(() => {
   //     const chosenDate = eventDetails?.chosenDate
@@ -175,15 +176,16 @@ const WidgetModal: React.FC<WidgetModalProps> = ({
 
   return (
     <>
-      <div
-        className="
-        hover:underline
-        hover:cursor-pointer
-        "
-        onClick={openModal}
-      >
-        Widgets
-      </div>
+        <div
+          className="
+          hover:underline
+          hover:cursor-pointer
+          "
+          onClick={openModal}
+        >
+          <MdOutlineWidgets size={"50px"} />
+          Widgets
+        </div>
 
       <div className="modal-overlay">
         <div className="modal-content">
@@ -209,14 +211,14 @@ const WidgetModal: React.FC<WidgetModalProps> = ({
                   bg-blue-100
                   bg-opacity-70
                   transition-opacity
-                "
+                  "
                 ></div>
               </Transition.Child>
 
               <div className="fixed border inset-5 overflow-y-auto flex items-center justify-center">
                 <div
                   className="
-                inset-5
+                  inset-5
                   flex 
                   flex-col
                   items-center 
@@ -229,24 +231,94 @@ const WidgetModal: React.FC<WidgetModalProps> = ({
                   bg-white
                   h-full
                   w-full
-                "
+                  "
                 >
                   {/* Components container */}
                   <div className="w-full h-full flex flex-col">
+                    {/* Sidebar */}
+                    {/* <aside
+                      className="
+                  fixed
+                  inset-y-0
+                  pb-20
+                  lg:pb-0
+                  lg:left-20
+                  lg:w-80
+                  lg:block
+                  overflow-y-auto
+                  border-r
+                  border-l
+                  border-slate-300
+                  shadow-2xl
+                  block
+                  w-full
+                  left-0
+                  md:hidden
+                  "
+                    >
+                      <div className="h-1/3 border border-slate-900">
+                        <h3
+                          className="flex flex-col hover:underline cursor-pointer"
+                          onClick={() => setShowPoll(!showPoll)}
+                        >
+                          Create poll
+                        </h3>
+                      </div>
+                      <div className="h-1/3 border border-slate-900">
+                        <h3
+                          className="flex flex-col hover:underline cursor-pointer"
+                          onClick={() => setShowDateSideBar(!showDateSideBar)}
+                        >
+                          Voted dates
+                        </h3>
+                      </div>
+                      <div className="h-1/3 border border-slate-900">
+                        <h3
+                          className="flex flex-col hover:underline cursor-pointer"
+                          onClick={() => setShowReminders(!showReminders)}
+                        >
+                          Reminders
+                        </h3>
+                      </div>
+                      <div className="h-1/3 border border-slate-900">
+                        <h3
+                          className="flex flex-col hover:underline cursor-pointer"
+                          onClick={() => setShowLocation(!showLocation)}
+                        >
+                          Location
+                        </h3>
+                      </div>
+                      <div className="h-1/3 border border-slate-900">
+                        <h3
+                          className="flex flex-col justify-center hover:underline cursor-pointer"
+                          onClick={() => setShowCalendar(!showCalendar)}
+                        >
+                          Calendar
+                        </h3>
+                      </div>
+                      <div className="h-1/3 border border-slate-900">
+                        <h3
+                          className="flex flex-col justify-center hover:underline cursor-pointer"
+                          onClick={() => setShowSplitWise(!showSplitWise)}
+                        >
+                          SplitWise
+                        </h3>
+                      </div>
+                    </aside> */}
                     {/*  Buttons */}
                     <div className="flex flex-row w-full gap-4 items-center p-4 justify-between text-slate-900">
                       <h1 className="font-bold">Widgets</h1>
-                      
+
                       <button
                         type="button"
                         onClick={closeModal}
                         className="
-                            items-end
-                            rounded-md 
-                            bg-slate-50 
-                            text-slate-400 
-                            hover:text-black
-                            "
+                        items-end
+                        rounded-md 
+                        bg-slate-50 
+                        text-slate-400 
+                        hover:text-black
+                        "
                       >
                         <span className="sr-only">Close</span>
                         <CgCloseR
@@ -255,10 +327,7 @@ const WidgetModal: React.FC<WidgetModalProps> = ({
                         />
                       </button>
                     </div>
-                      <div className="flex flex-row gap-10 m-10" >
-
-
-                      </div>
+                    <div className="flex flex-row gap-10 m-10"></div>
                     <div
                       className="
                             flex
@@ -270,76 +339,93 @@ const WidgetModal: React.FC<WidgetModalProps> = ({
                          "
                     >
                       {/* Container for Left widgets */}
-                      <div className="flex flex-col gap-3"> 
-                        {/* Voted dates */}
-                      <h3
-                        className="flex flex-col hover:underline cursor-pointer"
-                        onClick={() => setShowDateSideBar(!showDateSideBar)}
-                      >
-                        Voted dates
-                      </h3>
-                      {showDateSideBar && (
-                        <DateSideBar
-                          dateMap={dateMap}
-                          eventDetails={eventDetails}
-                          conversation={conversation}
-                          currentUser={currentUser}
-                          updateDateSideBarSelection={updateDateSideBarSelection}
-                        />
-                      )}
+                      <div className="flex flex-col gap-3">
+                        {/* Poll */}
+                        <h3
+                          className="flex flex-col hover:underline cursor-pointer"
+                          onClick={() => setShowPoll(!showPoll)}
+                        >
+                          Create poll
+                        </h3>
+                        {showPoll && <div>i am poll</div>}
+                        {/* Voted dates can go here */}
+                       
 
-                      {/* Reminders */}
-                      <h3
-                        className="flex flex-col hover:underline cursor-pointer"
-                        onClick={() => setShowReminders(!showReminders)}
-                      >
-                        Reminders
-                      </h3>
-                      {showReminders && <Reminders 
-                        admin={admin} 
-                        eventDetails={eventDetails} 
-                        conversation={conversation}
-                        currentUser={currentUser}
-                        />}
-                      {/* Reminders */}
-                      <h3
-                        className="flex flex-col hover:underline cursor-pointer"
-                        onClick={() => setShowLocation(!showLocation)}
-                      >
-                        Location
-                      </h3>
-                      {showLocation && <Location/>}
 
-                    </div>
+                        {/* Reminders */}
+                        <h3
+                          className="flex flex-col hover:underline cursor-pointer"
+                          onClick={() => setShowReminders(!showReminders)}
+                        >
+                          Reminders
+                        </h3>
+                        {showReminders && (
+                          <Reminders
+                            admin={admin}
+                            eventDetails={eventDetails}
+                            conversation={conversation}
+                            currentUser={currentUser}
+                          />
+                        )}
+                        {/* Reminders */}
+                        <h3
+                          className="flex flex-col hover:underline cursor-pointer"
+                          onClick={() => setShowLocation(!showLocation)}
+                        >
+                          Location
+                        </h3>
+                        {showLocation && <Location />}
+                      </div>
 
-                    {/* Container for calendar */}
-                    <div
-                      className="
+                      {/* Container for calendar */}
+                      <div
+                        className="
                       flex
                       flex-col
                       h-1/2
                       gap-3
                       "
-                    >
-                      {/* Calendar */}
-                      <h3
-                        className="flex flex-col justify-center hover:underline cursor-pointer"
-                        onClick={() => setShowCalendar(!showCalendar)}
+                      >
+                        {/* Calendar */}
+                        <h3
+                          className="flex flex-col justify-center hover:underline cursor-pointer"
+                          onClick={() => setShowCalendar(!showCalendar)}
                         >
-                        Calendar
-                      </h3> 
-                      {showCalendar && (
-                        <>
-                        <Calendar
-                          updateSelectedDay={updateSelectedDay}
-                          eventDetails={eventDetails}
-                          conversation={conversation}
-                          currentUser={currentUser}
-                        />
-                        {/* Sub potential dates button */}
-                        <div className="flex flex-col w-full gap-5 justify-end">
-                          <button
-                            className="
+                          Calendar
+                        </h3>
+                        {showCalendar && (
+                          <>
+                          <div className="flex flex-col ">
+                            <div className="flex flex-row border rounded-md p-1 border-slate-900 h-full">
+                              <Calendar
+                                updateSelectedDay={updateSelectedDay}
+                                eventDetails={eventDetails}
+                                conversation={conversation}
+                                currentUser={currentUser}
+                              />
+                              <h3
+                                  className="flex flex-col hover:underline cursor-pointer"
+                                  onClick={() => setShowDateSideBar(!showDateSideBar)}
+                                >
+                                  Voted dates
+                                </h3>
+                                {showDateSideBar && (
+                                  <DateSideBar
+                                    dateMap={dateMap}
+                                    eventDetails={eventDetails}
+                                    conversation={conversation}
+                                    currentUser={currentUser}
+                                    updateDateSideBarSelection={
+                                      updateDateSideBarSelection
+                                    }
+                                  />
+                                )}
+                              </div>
+                            </div>
+                            {/* Sub potential dates button */}
+                            <div className="flex flex-col w-full gap-5 justify-end">
+                              <button
+                                className="
                             flex
                             justify-center
                             p-2
@@ -349,16 +435,16 @@ const WidgetModal: React.FC<WidgetModalProps> = ({
                             hover:border-slate-900
                             hover:bg-amber-200
                             "
-                            onClick={submitPotentialDates}
-                          >
-                            Submit potential dates
-                          </button>
-                        </div>
-                        {/* If admin they can select a date */}
-                        {admin && (
-                          <div className="flex flex-col w-full gap-5 justify-end">
-                            <button
-                              className="
+                                onClick={submitPotentialDates}
+                              >
+                                Submit potential dates
+                              </button>
+                            </div>
+                            {/* If admin they can select a date */}
+                            {admin && (
+                              <div className="flex flex-col w-full gap-5 justify-end">
+                                <button
+                                  className="
                                 flex
                                 justify-center
                                 p-2
@@ -368,24 +454,22 @@ const WidgetModal: React.FC<WidgetModalProps> = ({
                                 hover:border-slate-900
                                 hover:bg-green-100
                                 "
-                              onClick={chooseDate}
-                            >
-                              Choose date
-                            </button>
-                          </div>
+                                  onClick={chooseDate}
+                                >
+                                  Choose date
+                                </button>
+                              </div>
+                            )}
+                          </>
                         )}
-                        </>
-                      )}
-                      {/* SplitWise */}
-                      <h3
-                        className="flex flex-col justify-center hover:underline cursor-pointer"
-                        onClick={() => setShowSplitWise(!showSplitWise)}
+                        {/* SplitWise */}
+                        <h3
+                          className="flex flex-col justify-center hover:underline cursor-pointer"
+                          onClick={() => setShowSplitWise(!showSplitWise)}
                         >
-                        SplitWise
-                      </h3> 
-                      {showSplitWise && (
-                        <SplitWise />
-                      )}
+                          SplitWise
+                        </h3>
+                        {showSplitWise && <SplitWise />}
                       </div>
                     </div>
                   </div>
@@ -406,7 +490,7 @@ const WidgetModal: React.FC<WidgetModalProps> = ({
                       Submit
                     </button>
                   </div>
-                    <div>Sync your calendar</div>
+                  <div>Sync your calendar</div>
                 </div>
               </div>
             </Dialog>

@@ -12,6 +12,7 @@ import axios from "axios";
 
 import { format } from "date-fns";
 import { PiPersonSimpleThrowDuotone } from "react-icons/pi";
+import { MdOutlineWidgets } from "react-icons/md";
 
 
 interface DetailSectionProps {
@@ -73,7 +74,7 @@ const handleClose = () => {
 
   const formattedChosenDate =
   eventDetails?.chosenDate &&
-  format(new Date(eventDetails.chosenDate), "MM/dd/yyyy");
+  format(new Date(eventDetails.chosenDate), "dd/MM/yyyy");
 
 
   return (
@@ -86,17 +87,18 @@ const handleClose = () => {
             h-1/5
             border
             border-slate-900
-            "
-      >
-        <div className="flex flex-row gap-2 justify-between p-20">
-
-            {/* Date display */}
-            <div className="flex flex-col border border-slate-900">Chosen date: {formattedChosenDate}</div>
-            {/* Pin a Header */}
-            <div className="flex flex-col border border-slate-900">
+            " 
+            >
+        <div className="flex flex-row gap-1 justify-between p-2 h-full">
+        <div className="flex flex-col w-1/2 h-full ">
+        <div className="flex flex-col h-full">
+            {/* Pin a Header display */}
+            <div className="flex flex-col border rounded-md p-1 border-slate-900 h-full ">
                 <h1 className="flex flex-row">{eventDetails?.description!}</h1>
+            <div className="flex flex-row w-full ">
+                
                 {admin && (
-                <form className="flex flex-row" onSubmit={handleSubmit}>
+                    <form className="flex flex-row" onSubmit={handleSubmit}>
                     <input
                     className="rounded-md hover:text-black  border"
                     type="text"
@@ -125,18 +127,33 @@ const handleClose = () => {
                     </button>
                 </form>
                 )}
+                {/* Poll display */}
+                <div className="flex w-full flex-col border rounded-md p-1 border-slate-900 hover:underline hover:cursor-pointer">
+                    Create Poll
+                </div>
+                </div>
             </div>
-            <div className="border border-slate-900">
-            <WidgetModal
-            label="WidgetModal"
-            id="widgetModal"
-            conversation={conversation}
-            currentUser={currentUser}
-            eventDetails={eventDetails}
-            />
+            <div className="flex flex-row w-full">
+                {/* Date display */}
+                <div className="flex w-full flex-col border rounded-md p-1 border-slate-900">Chosen date: {formattedChosenDate}</div>
+                {/* Location display */}
+                <div className="flex w-full flex-col border rounded-md p-1 border-slate-900">Location</div>
+                </div>
             </div>
+            </div>
+            <div className="flex flex-col justify-center items-center text-center border border-slate-900 rounded-md p-1">
+
+                <WidgetModal
+                label="WidgetModal"
+                id="widgetModal"
+                conversation={conversation}
+                currentUser={currentUser}
+                eventDetails={eventDetails}
+                />
+            </div>
+
             {/* Point conversation to a new event details*/}
-                <div className="flex flex-col border border-slate-900">
+                <div className="flex flex-col border border-slate-900 rounded-md p-1">
                     <button onClick={handleNewEvent} className="text-red-400 hover:underline">New Event</button>
                     {newEventModal && (<NewEventModal onClose={handleClose}  conversation={conversation} />)}
                 </div>

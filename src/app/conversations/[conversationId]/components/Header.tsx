@@ -9,10 +9,10 @@ import Link from "next/link";
 import { useMemo, useState } from "react";
 
 import { RiArrowLeftSLine } from "react-icons/ri";
-import { IoEllipsisHorizontalSharp } from "react-icons/io5";
+import { IoInformationCircleOutline, IoEllipsisHorizontalSharp } from "react-icons/io5";
+import { MdGroupAdd, MdOutlineArrowBack } from "react-icons/md";
+
 import ProfileDrawer from "./ProfileDrawer";
-import { set } from "date-fns";
-// import useActiveList from "@/app/hooks/useActiveList";
 
 interface HeaderProps {
   conversation: Conversation & {
@@ -68,32 +68,50 @@ const Header: React.FC<HeaderProps> = ({ conversation }) => {
                 lg:hidden 
                 block 
                 text-slate-500 
-                hover:text-black
+                hover:text-slate-900
                 transition 
                 cursor-pointer
-
               "
           >
-            <RiArrowLeftSLine size={26} />
+            {/* <RiArrowLeftSLine size={26} /> */}
+            <MdOutlineArrowBack size={26}/>
           </Link>
           
-          {conversation.isGroup ? 
-          (<AvatarGroup users={conversation.users}/>) : 
-          (<Avatar user={otherUser} />) }
+            {conversation.isGroup ? 
+            (<AvatarGroup users={conversation.users}/>) : 
+            (<Avatar user={otherUser} />) }
+
           
           <div className="flex p-1 flex-col text-slate-800 font-bold">
             <div>{conversation.name || otherUser.name}</div>
-            {/* <div className="text-xs text-slate-100">
-              {statusText}
-            </div> */}
           </div>
         </div>
 
             {/* Put your other nav bar buttons here */}
 
-        {/* <div>Calendar</div> */}
+        <div className="
+        text-slate-500 
+        flex 
+        flex-col 
+        border 
+        rounded-md 
+        border-slate-900 
+        p-2
+        hover:underline
+        bg-blue-50
+        cursor-pointer
+        hover:bg-blue-100
+        hover:border
+        hover:border-slate-900
+        hover:text-slate-900
+        transition
+        ">
+          
+          <MdGroupAdd size={23} />
+        </div>
 
         <IoEllipsisHorizontalSharp
+        // <IIoInformationCircleOutline
           size={26}
           onClick={() => setDrawerOpen(true)}
           className="
