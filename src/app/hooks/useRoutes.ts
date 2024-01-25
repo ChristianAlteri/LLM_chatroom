@@ -4,6 +4,8 @@ import { signOut } from "next-auth/react";
 
 import { TbLogout2 } from "react-icons/tb";
 import { PiWechatLogoDuotone, PiUsersThreeBold, PiUsersDuotone } from "react-icons/pi";
+import { TiHomeOutline } from "react-icons/ti";
+
 
 
 import useConversation from "./useConversation";
@@ -25,6 +27,13 @@ const useRoutes = () => {
 
             icon: PiUsersThreeBold,
             active: pathname === '/users'
+        },
+        {
+            label: 'Home',
+            href: '/home',
+
+            icon: TiHomeOutline,
+            active: pathname === '/home'
         },
         {
             label: 'Logout',

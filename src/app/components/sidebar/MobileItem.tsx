@@ -9,7 +9,6 @@ interface MobileItemProps {
     active?: boolean;
     icon: any;
     onClick?: () => void;
-
 }
 
 const MobileItem: React.FC<MobileItemProps> = ({
@@ -48,6 +47,7 @@ const MobileItem: React.FC<MobileItemProps> = ({
         )}
         >
             <Icon className="h-7 w-7"/>  
+            
         </Link>
      );
 }

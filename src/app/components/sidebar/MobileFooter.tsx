@@ -12,6 +12,8 @@ const MobileFooter = () => {
         return null;
     }
 
+    console.log(routes);
+
     return ( 
     
         <div
