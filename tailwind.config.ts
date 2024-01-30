@@ -8,6 +8,9 @@ const config: Config = {
   ],
   theme: {
     extend: {
+      screens: {
+        'xxs': '320px',
+      },
       colors: {
         purple2: {
           100: "#cbabeb",
