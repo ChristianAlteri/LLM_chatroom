@@ -6,6 +6,7 @@ import Sidebar from "../components/sidebar/Sidebar"
 import HomeList from "./Components/HomeList";
 import getConversations from "../actions/getConversations";
 import HomeNav from "./Components/HomeNav";
+import getEventDetails from "../actions/getEventDetails";
 
 
 
@@ -19,6 +20,7 @@ export default async function HomeLayout({
     const users = await getUsers()
     const allFriends = await getFriends()
     const conversations = await getConversations();
+    
 
     // console.log(users);
     return (
@@ -26,7 +28,7 @@ export default async function HomeLayout({
         <Sidebar >  
             <div className="h-full w-full bg-pink-900">
             
-                <HomeList users={users} allFriends={allFriends} conversations={conversations}/>
+                <HomeList users={users} allFriends={allFriends} conversations={conversations} />
                 {/* {children} */}
                  {/* Bottom container */}
                 <div className="absolute w-full flex-col justify-end xxs:bottom-14 sm:bottom-14 xs:bottom-14 md:bottom-14  lg:bottom-0 xl:bottom-0">

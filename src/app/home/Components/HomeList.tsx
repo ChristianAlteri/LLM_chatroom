@@ -14,27 +14,34 @@ import EmptyConversationBox from "./EmptyConversationBox";
 interface HomeListProps {
   users: User[];
   allFriends: User[];
-  conversations: FullConversationType[];
+//   eventDetailsAndConversations: Conversation & {
+//       users: User[];
+//     };
+    conversations: FullConversationType[];
 }
 
 const HomeList: React.FC<HomeListProps> = ({
   users,
   allFriends,
   conversations,
+//   eventDetailsAndConversations
 }) => {
     const [clickedConversationid, setId] = useState("");
     const conversationRef = useRef<HTMLDivElement>(null);
+    
 
 
   // Function to update the name state
   const updateConversationId = (conversationId: string | null) => {
     setId(conversationId!);
-    console.log('name', clickedConversationid);
+
   };
 
   const filteredConversations = conversations.filter(
     (conversation) => conversation.id === clickedConversationid
   );
+
+
 
   return (
     <div
@@ -68,6 +75,13 @@ const HomeList: React.FC<HomeListProps> = ({
                 allFriends={allFriends} 
                 conversations={conversations} 
                 updateConversationId={updateConversationId}
+                name={conversation.name}
+                id={conversation.id}
+
+                eventDetailsId={conversation.eventDetailsId}
+
+                // description={conversation.description}
+                // location={conversation.location}
             />
         ))}
         </div>
