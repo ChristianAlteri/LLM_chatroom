@@ -10,24 +10,25 @@ interface HomeCardProps {
   //     users: User[];
   //   };
   conversations: FullConversationType[];
-  updateName: (newName: string | null) => void;
+  updateConversationId: (conversationId: string | null) => void;
 }
 
 const HomeCard: React.FC<HomeCardProps> = ({
   users,
   allFriends,
   conversations,
-updateName,
+  updateConversationId,
 }) => {
   // console.log(conversations);
-  const name = conversations[3].name;
-  const handleClick = (name: string | null) => {
-    updateName(name); // Call updateName function with name parameter
+  const name = conversations[0].name;
+  const handleClick = (id: string | null) => {
+    console.log("id", id);
+    updateConversationId(id); 
   };
 
   return (
     <>
-      <div className="flex items-center justify-center p-5" onClick={() => handleClick(conversations[3].name)}>
+      <div className="flex items-center justify-center p-5" onClick={() => handleClick(conversations[0].id)}>
         <div className="flex justify-center items-center bg-slate-300 p-10 rounded-lg">
           <Avatar />
           <p>{name}</p>

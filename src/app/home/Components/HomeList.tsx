@@ -5,7 +5,11 @@ import { Conversation, User } from "@prisma/client";
 import HomeCard from "./HomeCard";
 import { FullConversationType } from "@/app/types";
 import HomeNav from "./HomeNav";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import ConversationBox from "@/app/conversations/components/ConversationBox";
+import ConversationBoxHome from "./ConversationBoxHome";
+import EmptyState from "@/app/components/EmptyState";
+import EmptyConversationBox from "./EmptyConversationBox";
 
 interface HomeListProps {
   users: User[];
@@ -17,14 +21,20 @@ const HomeList: React.FC<HomeListProps> = ({
   users,
   allFriends,
   conversations,
-
 }) => {
-    const [name, setName] = useState("");
+    const [clickedConversationid, setId] = useState("");
+    const conversationRef = useRef<HTMLDivElement>(null);
+
 
   // Function to update the name state
-  const updateName = (newName: string | null) => {
-    setName(newName!);
+  const updateConversationId = (conversationId: string | null) => {
+    setId(conversationId!);
+    console.log('name', clickedConversationid);
   };
+
+  const filteredConversations = conversations.filter(
+    (conversation) => conversation.id === clickedConversationid
+  );
 
   return (
     <div
@@ -38,6 +48,7 @@ const HomeList: React.FC<HomeListProps> = ({
     <div className="px-5">
       <div className="flex flex-row justify-between items-center mb-4 pt-4">
         <div className="text-2xl font-bold text-slate-800 py-5">Home</div>
+        <div>Pin to top</div>
         {/* Sort by selector */}
         <div className="flex text-left">
           <select className="border border-slate-500 text-xs p-1 rounded leading-tight focus:outline-none focus:border-slate-900">
@@ -50,18 +61,32 @@ const HomeList: React.FC<HomeListProps> = ({
       <div className="flex justify-center items-center ">
         {/* Card container */}
         <div className="border grid items-center justify-center xs:grid-cols-1 sm:grid-cols-3 md:grid-cols-3 lg:grid-cols-3 xl:grid-cols-5 2xl:grid-cols-6 gap-4  overflow-y-auto" style={{ height: '66vh' }}>
-                <HomeCard users={users} allFriends={allFriends} conversations={conversations} updateName={updateName}/>
-                <HomeCard users={users} allFriends={allFriends} conversations={conversations} updateName={updateName}/>
-                <HomeCard users={users} allFriends={allFriends} conversations={conversations} updateName={updateName}/>
-                <HomeCard users={users} allFriends={allFriends} conversations={conversations} updateName={updateName}/>
-                <HomeCard users={users} allFriends={allFriends} conversations={conversations} updateName={updateName}/>
-                <HomeCard users={users} allFriends={allFriends} conversations={conversations} updateName={updateName}/>
-                <HomeCard users={users} allFriends={allFriends} conversations={conversations} updateName={updateName}/>
+        {conversations.map((conversation, index) => (
+            <HomeCard 
+                key={index} // Make sure to include a unique key for each component
+                users={users} 
+                allFriends={allFriends} 
+                conversations={conversations} 
+                updateConversationId={updateConversationId}
+            />
+        ))}
         </div>
             <div className="absolute w-full flex-col justify-end xxs:bottom-36 sm:bottom-36 xs:bottom-36 md:bottom-36 lg:bottom-20 xl:bottom-20">
-                <div className="flex justify-center items-center bg-slate-300" style={{ height: '13vh' }}>
-                    dashboard or previewsss {name}
-            </div>
+                <div ref={conversationRef} className="flex flex-row justify-center items-center bg-slate-300 overflow-x-auto" style={{ height: '13vh' }}>
+                <div className="flex flex-row justify-between items-center gap-4">
+                    <div>Put other shit here</div>
+                    {filteredConversations && filteredConversations.length > 0 ? (
+                    filteredConversations.map((conversation, index) => (
+                        <ConversationBoxHome key={index} data={conversation} />
+                    ))
+                    ) : (
+                        // This could be anything 
+                    <div>
+                        <EmptyConversationBox />
+                    </div>
+                    )}
+                </div>
+                </div>
             </div>
       </div>
     </div>
