@@ -37,9 +37,9 @@ const HomeList: React.FC<HomeListProps> = ({
 
   };
 
-  const filteredConversations = conversations.filter(
-    (conversation) => conversation.id === clickedConversationid
-  );
+//   const filteredConversations = conversations.filter(
+//     (conversation) => conversation.id === clickedConversationid
+//   );
 
 
 
@@ -77,7 +77,7 @@ const HomeList: React.FC<HomeListProps> = ({
                 updateConversationId={updateConversationId}
                 name={conversation.name}
                 id={conversation.id}
-
+                messages={conversation.messages}
                 eventDetailsId={conversation.eventDetailsId}
 
                 // description={conversation.description}
@@ -88,8 +88,8 @@ const HomeList: React.FC<HomeListProps> = ({
             <div className="absolute w-full flex-col justify-end xxs:bottom-36 sm:bottom-36 xs:bottom-36 md:bottom-36 lg:bottom-20 xl:bottom-20">
                 <div ref={conversationRef} className="flex flex-row justify-center items-center bg-slate-300 overflow-x-auto" style={{ height: '13vh' }}>
                 <div className="flex flex-row justify-between items-center gap-4">
-                    <div>Put other shit here</div>
-                    {filteredConversations && filteredConversations.length > 0 ? (
+                    <div>Calendar of chosen dates</div>
+                    {/* {filteredConversations && filteredConversations.length > 0 ? (
                     filteredConversations.map((conversation, index) => (
                         <ConversationBoxHome key={index} data={conversation} />
                     ))
@@ -98,7 +98,7 @@ const HomeList: React.FC<HomeListProps> = ({
                     <div>
                         <EmptyConversationBox />
                     </div>
-                    )}
+                    )} */}
                 </div>
                 </div>
             </div>

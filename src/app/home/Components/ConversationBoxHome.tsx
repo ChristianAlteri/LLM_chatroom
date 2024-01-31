@@ -7,45 +7,54 @@ import { format } from "date-fns";
 
 import clsx from "clsx";
 
-import { FullConversationType } from "@/app/types";
+import { FullConversationType, FullMessageType } from "@/app/types";
 import useOtherUser from "@/app/hooks/useOtherUser";
 import Avatar from "@/app/components/Avatar";
 import AvatarGroup from "@/app/components/AvatarGroup";
 
 interface ConversationBoxHomeProps {
-  data: FullConversationType;
+  //   data: FullConversationType;
+  conversationId: string | null;
   selected?: boolean;
   onClick?: () => void;
   className?: string;
+  messages?: FullMessageType[];
 }
 
 const ConversationBoxHome: React.FC<ConversationBoxHomeProps> = ({
-  data,
+  //   data,
+  conversationId,
   selected,
   onClick,
   className,
+  messages,
 }) => {
-  const otherUser = useOtherUser(data);
   const session = useSession();
   const router = useRouter();
 
   // Re routes to the conversation
   const handleClick = useCallback(() => {
-    console.log("Data passed", data);
-    router.push(`/conversations/${data.id}`);
-  }, [data.id, router]);
+    console.log(
+      "Data passed",
+      conversationId,
+      selected,
+      onClick,
+      className,
+      messages
+    );
+    router.push(`/conversations/${conversationId}`);
+  }, [conversationId, router]);
 
   // Re routes to the conversation summary
   const handleClickCatchUp = useCallback(() => {
-    // console.log('Catch up clicked', data);
-    router.push(`/conversations/${data.id}/summary`);
+    router.push(`/conversations/${conversationId}/summary`);
   }, []);
 
   const lastMessage = useMemo(() => {
     // || so it doesn't break if msg empty
-    const messages = data.messages || [];
-    return messages[messages.length - 1];
-  }, [data.messages]);
+    const allMessages = messages || [];
+    return messages![messages!.length - 1];
+  }, [messages]);
 
   const userEmail = useMemo(
     () => session.data?.user?.email,
@@ -56,26 +65,7 @@ const ConversationBoxHome: React.FC<ConversationBoxHomeProps> = ({
     if (!lastMessage) {
       return false;
     }
-
-    const seenArray = lastMessage.seen || [];
-
-    if (!userEmail) {
-      return false;
-    }
-
-    return seenArray.filter((user) => user.email === userEmail).length !== 0;
-  }, [userEmail, lastMessage]);
-
-  const lastMessageText = useMemo(() => {
-    if (lastMessage?.image) {
-      return "Sent an image";
-    }
-
-    if (lastMessage?.body) {
-      return lastMessage?.body;
-    }
-
-    return "New chat created";
+    return true;
   }, [lastMessage]);
 
   return (
@@ -84,33 +74,7 @@ const ConversationBoxHome: React.FC<ConversationBoxHomeProps> = ({
     p-2
     "
     >
-      <div
-        onClick={handleClick}
-        className={clsx(
-          `
-
-            relative
-            flex
-            items-center
-            space-x-2
-            bg-slate-100
-            p-4
-            hover:bg-blue-50
-            hover:shadow-xl
-            hover:border
-            hover:border-slate-500
-            rounded-lg
-            transition
-            cursor-pointer 
-    `,
-          selected ? "bg-blue-200" : "bg-slate-50"
-        )}
-      >
-        {data.isGroup ? (
-          <AvatarGroup users={data.users} />
-        ) : (
-          <Avatar user={otherUser} />
-        )}
+      
         <div className="min-w-0 flex-1 ">
           <div className="focus:outline-none ">
             <div
@@ -121,50 +85,28 @@ const ConversationBoxHome: React.FC<ConversationBoxHomeProps> = ({
                 mb-1
                 
                 "
-            >
-              <p
-                className="
-                m-1
-                text-sm
-                font-medium
-                text-purple2-900
-                hover:text-black
-                
-                "
-              >
-                {data.name || otherUser.name}
-              </p>
-              {lastMessage?.createdAt && (
-                <p
-                  className="
-                    text-xs
-                    text-slate-500
-                    font-light
-                    "
-                >
-                  {format(new Date(lastMessage.createdAt), "p")}
-                </p>
-              )}
-            </div>
-            <p
-              className={clsx(
-                  `
-                  truncate
-                  text-xs
-                  text-slate-900
-                  p-1
-                  rounded-md
-                  `,
-                  hasSeen ? "text-purple2-600" : "text-slate-900 font-bold"
-                  )}
-                  >
-              {lastMessageText}
-            </p>
+            ></div>
           </div>
         </div>
-                {!hasSeen && (
-                  <span
-                    className="
+        <span
+          onClick={handleClick}
+          className="
+              flex
+              flex-row
+              justify-end
+                  text-xs 
+                  p-1
+                  text-slate-400 
+                  hover:text-purple2-500 
+                  hover:underline
+                  hover:cursor-pointer
+                "
+        >
+          Chat
+        </span>
+        {!hasSeen && (
+          <span
+            className="
                       flex
                       flex-row
                       justify-end
@@ -175,13 +117,13 @@ const ConversationBoxHome: React.FC<ConversationBoxHomeProps> = ({
                           hover:underline
                           hover:cursor-pointer
                           "
-                    onClick={handleClickCatchUp}
-                  >
-                    Catch up
-                  </span>
-                )}
+            onClick={handleClickCatchUp}
+          >
+            Catch up
+          </span>
+        )}
       </div>
-    </div>
+
   );
 };
 

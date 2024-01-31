@@ -1,9 +1,10 @@
 "use client";
 import Avatar from "@/app/components/Avatar";
-import { FullConversationType } from "@/app/types";
+import { FullConversationType, FullMessageType } from "@/app/types";
 import { Conversation, User } from "@prisma/client";
 import axios from "axios";
 import { use, useEffect, useState } from "react";
+import ConversationBoxHome from "./ConversationBoxHome";
 
 interface HomeCardProps {
   users: User[];
@@ -16,6 +17,7 @@ interface HomeCardProps {
   name?: string | null;
   id: string | null;
   eventDetailsId?: string | null; 
+  messages?: FullMessageType[];
 //   chosenDate?: string | null;
 //   description?: string | null;
 //   location?: string | null;
@@ -28,7 +30,8 @@ const HomeCard: React.FC<HomeCardProps> = ({
   updateConversationId,
   name,
   id,
-  eventDetailsId
+  eventDetailsId,
+    messages,
 //   chosenDate,
 //   description,
 //   location,
@@ -52,13 +55,12 @@ const HomeCard: React.FC<HomeCardProps> = ({
     }, [id]); 
 
     useEffect(() => {
-
-        console.log('eventDetailsData', eventDetailsData);
     }, [eventDetailsData]);
 
   const handleClick = (id: string | null) => {
     updateConversationId(id);
   };
+
 
   return (
     <>
@@ -69,6 +71,8 @@ const HomeCard: React.FC<HomeCardProps> = ({
         <div className="flex justify-center items-center bg-slate-300 p-10 rounded-lg">
           <Avatar />
           <p>{name}</p>
+            <ConversationBoxHome key={id} conversationId={id} messages={messages}/>
+
           {/* <p>{chosenDate}</p>
           <p>{description}</p>
           <p>{location}</p> */}
